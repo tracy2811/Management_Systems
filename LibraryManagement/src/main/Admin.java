@@ -28,8 +28,8 @@ public class Admin {
             ps = MyConnection.createConnection().prepareStatement(query);
             ps.setInt(1, id);
             ps.setString(2, username);
-            ps.setString(3, fname);
-            ps.setString(4, lname);
+            ps.setString(3, fname.toLowerCase());
+            ps.setString(4, lname.toLowerCase());
             
             rs = ps.executeQuery();
             
@@ -92,8 +92,8 @@ public class Admin {
             String query = "INSERT INTO `users`(`first_name`, `last_name`, `username`, `password`, `type`) VALUES (?,?,?,?,2)";
             
             ps = MyConnection.createConnection().prepareStatement(query);
-            ps.setString(1, fname);
-            ps.setString(2, lname);
+            ps.setString(1, fname.toLowerCase());
+            ps.setString(2, lname.toLowerCase());
             ps.setString(3, username);
             ps.setString(4, password);
             
@@ -143,8 +143,8 @@ public class Admin {
             String query = "UPDATE `users` SET `first_name`=?,`last_name`=?,`username`=?,`password`=? WHERE `type`=2 AND`id`=?";
             
             ps = MyConnection.createConnection().prepareStatement(query);
-            ps.setString(1, fname);
-            ps.setString(2, lname);
+            ps.setString(1, fname.toLowerCase());
+            ps.setString(2, lname.toLowerCase());
             ps.setString(3, username);
             ps.setString(4, password);
             ps.setInt(5, id);
