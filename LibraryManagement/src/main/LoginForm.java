@@ -207,14 +207,12 @@ public class LoginForm extends javax.swing.JFrame {
                         admin.setVisible(true);
                         admin.pack();
                         admin.setLocationRelativeTo(null);
-                        admin.setExtendedState(JFrame.MAXIMIZED_BOTH);
                     } else if (rs.getInt(1) == 2) {
                         // librarian
                         LibrarianForm lib = new LibrarianForm();
                         lib.setVisible(true);
                         lib.pack();
                         lib.setLocationRelativeTo(null);
-                        lib.setExtendedState(JFrame.MAXIMIZED_BOTH);
                     }
                     this.dispose();
                 } else {

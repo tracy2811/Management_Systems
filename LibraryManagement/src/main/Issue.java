@@ -2,50 +2,50 @@
 package main;
 
 import java.awt.Component;
-import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-
-public class Admin {
-    // Admin can search, add, update, delete librarians
+public class Issue {
     private final Component parentComponent;
     
-    public Admin(Component parentComponent) {
+    public Issue(Component parentComponent) {
         this.parentComponent = parentComponent;
     }
     
-    DefaultTableModel searchLibrarian(int id, String fname, String lname, String username) {
+    DefaultTableModel searchIssue(int id, int bookID, int readerID) {
         try {
             PreparedStatement ps;
             ResultSet rs;
-            String query = "SELECT `id`, `first_name`, `last_name`, `username`, `password` FROM `users` WHERE `type`=2 AND (`id`=? OR `username`=? OR `first_name`=? OR `last_name`=?)";
+            String query = "SELECT * FROM `issues` WHERE `id`=? OR `book_id`=? OR `reader_id`=?";
             
             ps = MyConnection.createConnection().prepareStatement(query);
             ps.setInt(1, id);
-            ps.setString(2, username);
-            ps.setString(3, fname);
-            ps.setString(4, lname);
+            ps.setInt(2, bookID);
+            ps.setInt(3, readerID);
             
             rs = ps.executeQuery();
             
-            DefaultTableModel table = new DefaultTableModel(new Object[]{"ID", "First name", "Last name", "Username", "Password"}, 0);
+            DefaultTableModel table = new DefaultTableModel(new Object[]{"ID", "Book ID", "Reader ID", "Checkout Date", "Return Date", "Fine"}, 0);
 
             if (rs.next() == false) {
-                JOptionPane.showMessageDialog(parentComponent, "No Librarian found!", "No Result", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(parentComponent, "No book found!", "No Result", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 Object[] row;
                 do {
-                    row = new Object[5];
+                    row = new Object[8];
                     row[0] = rs.getInt(1);
                     row[1] = rs.getString(2);
                     row[2] = rs.getString(3);
-                    row[3] = rs.getString(4);
-                    row[4] = rs.getString(5);
+                    row[3] = rs.getInt(4);
+                    row[4] = rs.getInt(5);
+                    row[5] = rs.getString(6);
+                    row[6] = rs.getString(7);
+                    row[7] = rs.getInt(8);
                     table.addRow(row);
                 } while (rs.next());
             }
@@ -56,26 +56,29 @@ public class Admin {
         }
     }
     
-    DefaultTableModel getAllLibrarians() {
+    DefaultTableModel getAllIssues() {
         try {
             PreparedStatement ps;
             ResultSet rs;
-            String query = "SELECT `id`, `first_name`, `last_name`, `username`, `password` FROM `users` WHERE `type`=2";
+            String query = "SELECT * FROM `issues`";
             
             ps = MyConnection.createConnection().prepareStatement(query);
             
             rs = ps.executeQuery();
             
-            DefaultTableModel table = new DefaultTableModel(new Object[]{"ID", "First name", "Last name", "Username", "Password"}, 0);
+            DefaultTableModel table = new DefaultTableModel(new Object[]{"ID", "Book ID", "Reader ID", "Checkout Date", "Return Date", "Fine"}, 0);
             
             Object[] row;
             while(rs.next()) {
-                row = new Object[5];
+                row = new Object[8];
                 row[0] = rs.getInt(1);
                 row[1] = rs.getString(2);
                 row[2] = rs.getString(3);
-                row[3] = rs.getString(4);
-                row[4] = rs.getString(5);
+                row[3] = rs.getInt(4);
+                row[4] = rs.getInt(5);
+                row[5] = rs.getString(6);
+                row[6] = rs.getString(7);
+                row[7] = rs.getInt(8);
                 table.addRow(row);
             }
             
@@ -86,16 +89,15 @@ public class Admin {
         }
     }
     
-    boolean addLibrarian(String fname, String lname, String username, String password) {
+    boolean addIssue(int bookID, int readerID, String checkoutDate) {
         try {
             PreparedStatement ps;
-            String query = "INSERT INTO `users`(`first_name`, `last_name`, `username`, `password`, `type`) VALUES (?,?,?,?,2)";
+            String query = "INSERT INTO `issues`(`book_id`, `reader_id`, `checkout_date`) VALUES (?,?,?)";
             
             ps = MyConnection.createConnection().prepareStatement(query);
-            ps.setString(1, fname);
-            ps.setString(2, lname);
-            ps.setString(3, username);
-            ps.setString(4, password);
+            ps.setInt(1, bookID);
+            ps.setInt(2, readerID);
+            ps.setString(3, checkoutDate);
             
             return ps.executeUpdate() > 0;
             
@@ -105,10 +107,10 @@ public class Admin {
         }
     }
     
-    boolean deleteLibrarianByID(int id) {
+    boolean deleteIssue(int id) {
         try {
             PreparedStatement ps;
-            String query = "DELETE FROM `users` WHERE `type`=2 AND`id`=?";
+            String query = "DELETE FROM `issues` WHERE `id`=?";
             
             ps = MyConnection.createConnection().prepareStatement(query);
             ps.setInt(1, id);
@@ -121,32 +123,16 @@ public class Admin {
         }
     }
     
-    boolean deleteLibrarianByUsername(String username) {
+    boolean updateIssue(int id, int bookID, int readerID, String checkoutDate, String returnDate) {
         try {
             PreparedStatement ps;
-            String query = "DELETE FROM `users` WHERE `type`=2 AND `username`=?";
             
+            String query = "UPDATE `issues` SET `book_id`=?,`user_id`=?,`checkout_date`=?,`return_date`=? WHERE `id`=?";
             ps = MyConnection.createConnection().prepareStatement(query);
-            ps.setString(1, username);
-            
-            return ps.executeUpdate() > 0;
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
-    }
-    
-    boolean updateLibrarianByID(int id, String fname, String lname, String username, String password) {
-        try {
-            PreparedStatement ps;
-            String query = "UPDATE `users` SET `first_name`=?,`last_name`=?,`username`=?,`password`=? WHERE `type`=2 AND`id`=?";
-            
-            ps = MyConnection.createConnection().prepareStatement(query);
-            ps.setString(1, fname);
-            ps.setString(2, lname);
-            ps.setString(3, username);
-            ps.setString(4, password);
+            ps.setInt(1, bookID);
+            ps.setInt(2, readerID);
+            ps.setString(3, checkoutDate);
+            ps.setString(4, returnDate);
             ps.setInt(5, id);
             
             return ps.executeUpdate() > 0;

@@ -11,11 +11,11 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 
-public class Admin {
+public class Librarian {
     // Admin can search, add, update, delete librarians
     private final Component parentComponent;
     
-    public Admin(Component parentComponent) {
+    public Librarian(Component parentComponent) {
         this.parentComponent = parentComponent;
     }
     
@@ -157,3 +157,4 @@ public class Admin {
         }
     }
 }
+

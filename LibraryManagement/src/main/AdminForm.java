@@ -5,6 +5,10 @@
  */
 package main;
 
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author trang
@@ -14,10 +18,11 @@ public class AdminForm extends javax.swing.JFrame {
     /**
      * Creates new form Admin
      */
-    private Admin admin;
-    public AdminForm(int adminID) {
-        admin = new Admin(adminID);
+    private final Admin admin = new Admin(rootPane);
+    
+    public AdminForm() {
         initComponents();
+        refresh(admin.getAllLibrarians());
     }
 
     /**
@@ -31,9 +36,6 @@ public class AdminForm extends javax.swing.JFrame {
 
         jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabelAdminID = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableLib = new javax.swing.JTable();
@@ -60,17 +62,6 @@ public class AdminForm extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(0, 18, 91));
 
-        jLabel3.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel3.setText("icon");
-
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel4.setText("admin");
-
-        jLabelAdminID.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabelAdminID.setForeground(new java.awt.Color(204, 204, 204));
-        jLabelAdminID.setText("id");
-
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Manage Librarians");
@@ -80,30 +71,15 @@ public class AdminForm extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelAdminID, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(239, 239, 239)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(34, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabelAdminID)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4)))
+                .addContainerGap(26, Short.MAX_VALUE)
+                .addComponent(jLabel1)
                 .addGap(26, 26, 26))
         );
 
@@ -140,7 +116,7 @@ public class AdminForm extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 18, 91));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel6.setText("Firstname:");
+        jLabel6.setText("First name:");
 
         jTextFieldLibFname.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jTextFieldLibFname.setForeground(new java.awt.Color(0, 18, 91));
@@ -148,7 +124,7 @@ public class AdminForm extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 18, 91));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel7.setText("Lastname:");
+        jLabel7.setText("Last name:");
 
         jTextFieldLibLname.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jTextFieldLibLname.setForeground(new java.awt.Color(0, 18, 91));
@@ -184,7 +160,7 @@ public class AdminForm extends javax.swing.JFrame {
         jButtonClear.setBackground(new java.awt.Color(0, 18, 91));
         jButtonClear.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jButtonClear.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonClear.setText("Clear");
+        jButtonClear.setText("Clear & Refresh");
         jButtonClear.setBorder(null);
         jButtonClear.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButtonClear.addActionListener(new java.awt.event.ActionListener() {
@@ -274,7 +250,7 @@ public class AdminForm extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -328,23 +304,90 @@ public class AdminForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
-        // TODO add your handling code here:
+        String fname = jTextFieldLibFname.getText();
+        String lname = jTextFieldLibLname.getText();
+        String username = jTextFieldLibUsername.getText();
+        String password = jTextFieldLibPassword.getText();
+        
+        if (fname.isBlank() || lname.isBlank() || username.isBlank() || password.isBlank()) {
+            JOptionPane.showMessageDialog(rootPane, "Fields required: First name, Last name, Username, Password", "Empty Field", JOptionPane.WARNING_MESSAGE);
+        } else {
+            if (admin.addLibrarian(fname, lname, username, password)) {
+                JOptionPane.showMessageDialog(rootPane, username+" added successfully!", "Librarian Added", JOptionPane.INFORMATION_MESSAGE);
+                refresh(admin.getAllLibrarians());
+            } else {
+                JOptionPane.showMessageDialog(rootPane, username + " not added", "Add Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        }
     }//GEN-LAST:event_jButtonAddActionPerformed
 
     private void jButtonClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearActionPerformed
-        // TODO add your handling code here:
+        refresh(admin.getAllLibrarians());
+        JOptionPane.showMessageDialog(rootPane, "System refreshed", "Refresed", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jButtonClearActionPerformed
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
-        // TODO add your handling code here:
+        try {
+            int id = Integer.valueOf(jTextFieldLibID.getText());
+            int ok = JOptionPane.showConfirmDialog(rootPane, "Delete Librarian " + jTextFieldLibID.getText()+"?", "Delete Confirm", JOptionPane.OK_CANCEL_OPTION);
+            if (ok == JOptionPane.OK_OPTION) {
+                if (admin.deleteLibrarianByID(id)) {
+                    JOptionPane.showMessageDialog(rootPane, jTextFieldLibID.getText() + " deleted", "Librarian Deleted", JOptionPane.INFORMATION_MESSAGE);
+                    refresh(admin.getAllLibrarians());
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, jTextFieldLibID.getText() + " deleted. Ensure ID is correct.", "Delete Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " - Input number only for ID", "ID Invalid", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
-        // TODO add your handling code here:
+        try {
+            int id = Integer.valueOf(jTextFieldLibID.getText());
+            String fname = jTextFieldLibFname.getText();
+            String lname = jTextFieldLibLname.getText();
+            String username = jTextFieldLibUsername.getText();
+            String password = jTextFieldLibPassword.getText();
+            
+            if (fname.isBlank() || lname.isBlank() || username.isBlank() || password.isBlank()) {
+                JOptionPane.showMessageDialog(rootPane, "Enter all fields to update", "Empty Field", JOptionPane.WARNING_MESSAGE);
+            } else {
+                if (admin.updateLibrarianByID(id, fname, lname, username, password)) {
+                    JOptionPane.showMessageDialog(rootPane, jTextFieldLibID.getText() + " updated", "Librarian Deleted", JOptionPane.INFORMATION_MESSAGE);
+                    refresh(admin.getAllLibrarians());
+                } else {
+                        JOptionPane.showMessageDialog(rootPane, jTextFieldLibID.getText() + " not updated. Ensure ID is correct.", "Delete Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " - Input number only for ID", "ID Invalid", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButtonUpdateActionPerformed
 
     private void jButtonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSearchActionPerformed
-        // TODO add your handling code here:
+        String fname = jTextFieldLibFname.getText();
+        String lname = jTextFieldLibLname.getText();
+        String username = jTextFieldLibUsername.getText();
+        int id = -1;
+        
+        if (fname.isBlank() && lname.isBlank() && username.isBlank()) {
+            try {
+                id = Integer.valueOf(jTextFieldLibID.getText());
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " - Input number only for ID. You can search by ID, First name, Last name, Username.", "ID Invalid", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+        
+        DefaultTableModel model = admin.searchLibrarian(id, fname, lname, username);
+        if (model != null) {
+            refresh(model);
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Cannot search for Librarians. Please try again.", "Search Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButtonSearchActionPerformed
 
     /**
@@ -388,6 +431,15 @@ public class AdminForm extends javax.swing.JFrame {
             }
         });
     }
+    
+    private void refresh(DefaultTableModel table) {
+        jTextFieldLibID.setText("");
+        jTextFieldLibFname.setText("");
+        jTextFieldLibLname.setText("");
+        jTextFieldLibUsername.setText("");
+        jTextFieldLibPassword.setText("");
+        jTableLib.setModel(table);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdd;
@@ -397,13 +449,10 @@ public class AdminForm extends javax.swing.JFrame {
     private javax.swing.JButton jButtonUpdate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JLabel jLabelAdminID;
     private javax.swing.JLabel jLabelInfo;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
