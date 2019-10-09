@@ -11,11 +11,11 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 
-public class Admin {
+public class Librarian {
     // Admin can search, add, update, delete librarians
     private final Component parentComponent;
     
-    public Admin(Component parentComponent) {
+    public Librarian(Component parentComponent) {
         this.parentComponent = parentComponent;
     }
     
@@ -51,7 +51,7 @@ public class Admin {
             }
             return table;
         } catch (SQLException ex) {
-            Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Librarian.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
@@ -81,7 +81,7 @@ public class Admin {
             
             return table;
         } catch (SQLException ex) {
-            Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Librarian.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
@@ -100,7 +100,7 @@ public class Admin {
             return ps.executeUpdate() > 0;
             
         } catch (SQLException ex) {
-            Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Librarian.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
@@ -116,7 +116,7 @@ public class Admin {
             return ps.executeUpdate() > 0;
             
         } catch (SQLException ex) {
-            Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Librarian.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
@@ -132,7 +132,7 @@ public class Admin {
             return ps.executeUpdate() > 0;
             
         } catch (SQLException ex) {
-            Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Librarian.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
@@ -152,7 +152,7 @@ public class Admin {
             return ps.executeUpdate() > 0;
             
         } catch (SQLException ex) {
-            Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Librarian.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }

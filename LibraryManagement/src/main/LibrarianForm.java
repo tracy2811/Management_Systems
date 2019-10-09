@@ -1,21 +1,66 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package main;
 
-/**
- *
- * @author trang
- */
+import java.awt.Color;
+import java.awt.HeadlessException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
+
 public class LibrarianForm extends javax.swing.JFrame {
 
+    private final Book book = new Book(rootPane);
+    private final Issue issue = new Issue(rootPane);
+    private final Reader reader = new Reader(rootPane);
+    
     /**
      * Creates new form Librarian
      */
     public LibrarianForm() {
         initComponents();
+        UIManager.put("Menu.selectionBackground", new Color(0,18,91));
+        selectReader();
+    }
+    
+    private void selectReader() {
+        jMenuReader.setSelected(true);
+        jMenuIssue.setSelected(false);
+        jMenuBook.setSelected(false);
+        jPanelReader.setVisible(true);
+        jPanelReader.setEnabled(true);
+        jPanelBook.setVisible(false);
+        jPanelBook.setEnabled(false);
+        jPanelIssue.setVisible(false);
+        jPanelIssue.setEnabled(false);
+        readerRefresh(reader.getAllReaders());
+    }
+    
+    private void selectBook() {
+        jMenuReader.setSelected(false);
+        jMenuIssue.setSelected(false);
+        jMenuBook.setSelected(true);
+        jPanelReader.setVisible(false);
+        jPanelReader.setEnabled(false);
+        jPanelBook.setVisible(true);
+        jPanelBook.setEnabled(true);
+        jPanelIssue.setVisible(false);
+        jPanelIssue.setEnabled(false);
+        bookRefresh(book.getAllBooks());
+    }
+    
+    private void selectIssue() {
+        jMenuReader.setSelected(false);
+        jMenuIssue.setSelected(true);
+        jMenuBook.setSelected(false);
+        jPanelReader.setVisible(false);
+        jPanelReader.setEnabled(false);
+        jPanelBook.setVisible(false);
+        jPanelBook.setEnabled(false);
+        jPanelIssue.setVisible(true);
+        jPanelIssue.setEnabled(true);
+        issueRefresh(issue.getAllIssues());
     }
 
     /**
@@ -27,346 +72,169 @@ public class LibrarianForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanelBook = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTableLib = new javax.swing.JTable();
-        jLabel2 = new javax.swing.JLabel();
-        jTextFieldBookID = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jTextFieldBookTitle = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        jTextFieldBookAuthor = new javax.swing.JTextField();
-        jTextFieldBookQuantity = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
-        jTextFieldBookAvailable = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
-        jButtonBookAdd = new javax.swing.JButton();
-        jButtonBookClearFields = new javax.swing.JButton();
-        jButtonBookDelete = new javax.swing.JButton();
-        jButtonBookUpdate = new javax.swing.JButton();
-        jButtonBookSearch = new javax.swing.JButton();
-        jLabelBookInfo = new javax.swing.JLabel();
         jPanelReader = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTableLib1 = new javax.swing.JTable();
-        jLabel3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTableReader = new javax.swing.JTable();
+        jPanelTool = new javax.swing.JPanel();
+        jPanelInput = new javax.swing.JPanel();
+        jLabelID = new javax.swing.JLabel();
         jTextFieldReaderID = new javax.swing.JTextField();
-        jLabel10 = new javax.swing.JLabel();
+        jLabelFname = new javax.swing.JLabel();
         jTextFieldReaderFname = new javax.swing.JTextField();
-        jLabel11 = new javax.swing.JLabel();
+        jLabelLname = new javax.swing.JLabel();
         jTextFieldReaderLname = new javax.swing.JTextField();
-        jButtonReaderAdd = new javax.swing.JButton();
-        jButtonReaderClearField = new javax.swing.JButton();
-        jButtonReaderDelete = new javax.swing.JButton();
-        jButtonReaderUpdate = new javax.swing.JButton();
+        jPanelButton = new javax.swing.JPanel();
+        jButtonReaderClear = new javax.swing.JButton();
         jButtonReaderSearch = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jButtonReaderAdd = new javax.swing.JButton();
+        jButtonReaderUpdate = new javax.swing.JButton();
+        jButtonReaderDelete = new javax.swing.JButton();
         jLabelReaderInfo = new javax.swing.JLabel();
+        jPanelBook = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTableBook = new javax.swing.JTable();
+        jPanelTool1 = new javax.swing.JPanel();
+        jPanelInput1 = new javax.swing.JPanel();
+        jLabelID1 = new javax.swing.JLabel();
+        jTextFieldBookID = new javax.swing.JTextField();
+        jLabelBookTitle = new javax.swing.JLabel();
+        jTextFieldBookTitle = new javax.swing.JTextField();
+        jLabelBookAuthor = new javax.swing.JLabel();
+        jTextFieldBookAuthor = new javax.swing.JTextField();
+        jLabelBookQuantity = new javax.swing.JLabel();
+        jTextFieldBookQuantity = new javax.swing.JTextField();
+        jLabelBookAvailable = new javax.swing.JLabel();
+        jTextFieldBookAvailable = new javax.swing.JTextField();
+        jPanelButton1 = new javax.swing.JPanel();
+        jButtonBookClear = new javax.swing.JButton();
+        jButtonBookSearch = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jButtonBookAdd = new javax.swing.JButton();
+        jButtonBookUpdate = new javax.swing.JButton();
+        jButtonBookDelete = new javax.swing.JButton();
+        jLabelBookInfo = new javax.swing.JLabel();
+        jPanelIssue = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTableIssue = new javax.swing.JTable();
+        jPanelTool2 = new javax.swing.JPanel();
+        jPanelInput2 = new javax.swing.JPanel();
+        jLabelID2 = new javax.swing.JLabel();
+        jTextFieldIssueID = new javax.swing.JTextField();
+        jLabelFname2 = new javax.swing.JLabel();
+        jTextFieldIssueBookID = new javax.swing.JTextField();
+        jLabelLname2 = new javax.swing.JLabel();
+        jTextFieldIssueReaderID = new javax.swing.JTextField();
+        jLabelLname3 = new javax.swing.JLabel();
+        jFormattedTextFieldODate = new javax.swing.JFormattedTextField();
+        jLabelLname4 = new javax.swing.JLabel();
+        jFormattedTextFieldRDate = new javax.swing.JFormattedTextField();
+        jPanelButton2 = new javax.swing.JPanel();
+        jButtonIssueClear = new javax.swing.JButton();
+        jButtonIssueSearch = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        jButtonIssueAdd = new javax.swing.JButton();
+        jButtonIssueUpdate = new javax.swing.JButton();
+        jButtonIssueDelete = new javax.swing.JButton();
+        jLabelInfo2 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
+        jMenuReader = new javax.swing.JMenu();
+        jMenuBook = new javax.swing.JMenu();
+        jMenuIssue = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Librarian - Manage Books, Readers, Issues");
+        getContentPane().setLayout(new javax.swing.OverlayLayout(getContentPane()));
 
-        jPanelBook.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelReader.setLayout(new java.awt.GridLayout(1, 2, 30, 30));
 
-        jTableLib.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jTableLib.setForeground(new java.awt.Color(0, 18, 91));
-        jTableLib.setModel(new javax.swing.table.DefaultTableModel(
+        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+
+        jTableReader.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jTableReader.setForeground(new java.awt.Color(0, 18, 91));
+        jTableReader.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Title", "Fisrt author", "Quantity", "Available"
+                "ID", "First name", "Last name"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jTableLib.setGridColor(new java.awt.Color(0, 18, 91));
-        jTableLib.setSelectionBackground(new java.awt.Color(0, 18, 91));
-        jScrollPane1.setViewportView(jTableLib);
+        jTableReader.setGridColor(new java.awt.Color(0, 18, 91));
+        jTableReader.setName(""); // NOI18N
+        jTableReader.setRowHeight(30);
+        jTableReader.setRowMargin(2);
+        jTableReader.setSelectionBackground(new java.awt.Color(0, 18, 91));
+        jTableReader.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(jTableReader);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 18, 91));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel2.setText("ID:");
+        jPanelReader.add(jScrollPane1);
 
-        jTextFieldBookID.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jTextFieldBookID.setForeground(new java.awt.Color(0, 18, 91));
+        jPanelInput.setLayout(new java.awt.GridLayout(3, 2, 20, 20));
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(0, 18, 91));
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel6.setText("Title:");
-
-        jTextFieldBookTitle.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jTextFieldBookTitle.setForeground(new java.awt.Color(0, 18, 91));
-
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(0, 18, 91));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel7.setText("First author:");
-
-        jTextFieldBookAuthor.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jTextFieldBookAuthor.setForeground(new java.awt.Color(0, 18, 91));
-
-        jTextFieldBookQuantity.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jTextFieldBookQuantity.setForeground(new java.awt.Color(0, 18, 91));
-
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(0, 18, 91));
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel8.setText("Quantity:");
-
-        jTextFieldBookAvailable.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jTextFieldBookAvailable.setForeground(new java.awt.Color(0, 18, 91));
-
-        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(0, 18, 91));
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel9.setText("Available:");
-
-        jButtonBookAdd.setBackground(new java.awt.Color(0, 18, 91));
-        jButtonBookAdd.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButtonBookAdd.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonBookAdd.setText("Add");
-        jButtonBookAdd.setBorder(null);
-        jButtonBookAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButtonBookAdd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBookAddActionPerformed(evt);
-            }
-        });
-
-        jButtonBookClearFields.setBackground(new java.awt.Color(0, 18, 91));
-        jButtonBookClearFields.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButtonBookClearFields.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonBookClearFields.setText("Clear Fields");
-        jButtonBookClearFields.setBorder(null);
-        jButtonBookClearFields.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButtonBookClearFields.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBookClearFieldsActionPerformed(evt);
-            }
-        });
-
-        jButtonBookDelete.setBackground(new java.awt.Color(0, 18, 91));
-        jButtonBookDelete.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButtonBookDelete.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonBookDelete.setText("Delete");
-        jButtonBookDelete.setBorder(null);
-        jButtonBookDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButtonBookDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBookDeleteActionPerformed(evt);
-            }
-        });
-
-        jButtonBookUpdate.setBackground(new java.awt.Color(0, 18, 91));
-        jButtonBookUpdate.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButtonBookUpdate.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonBookUpdate.setText("Update");
-        jButtonBookUpdate.setBorder(null);
-        jButtonBookUpdate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButtonBookUpdate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBookUpdateActionPerformed(evt);
-            }
-        });
-
-        jButtonBookSearch.setBackground(new java.awt.Color(0, 18, 91));
-        jButtonBookSearch.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButtonBookSearch.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonBookSearch.setText("Search");
-        jButtonBookSearch.setBorder(null);
-        jButtonBookSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButtonBookSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBookSearchActionPerformed(evt);
-            }
-        });
-
-        jLabelBookInfo.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
-        jLabelBookInfo.setText("<html>You are managing Books. \n<br>Make sure you know what you are performing. \n<br>From here, you can:\n<br>- Search for books by id, title and first author\n<br>- Add new books\n<br>- Delete book by id\n<br>- Update book information</html>");
-
-        javax.swing.GroupLayout jPanelBookLayout = new javax.swing.GroupLayout(jPanelBook);
-        jPanelBook.setLayout(jPanelBookLayout);
-        jPanelBookLayout.setHorizontalGroup(
-            jPanelBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBookLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanelBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanelBookLayout.createSequentialGroup()
-                        .addGroup(jPanelBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanelBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanelBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jTextFieldBookTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextFieldBookID, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jTextFieldBookAuthor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jTextFieldBookQuantity, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jTextFieldBookAvailable, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBookLayout.createSequentialGroup()
-                        .addComponent(jButtonBookAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonBookUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonBookDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButtonBookClearFields, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonBookSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelBookInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-        jPanelBookLayout.setVerticalGroup(
-            jPanelBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelBookLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanelBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanelBookLayout.createSequentialGroup()
-                        .addGroup(jPanelBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldBookID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanelBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldBookTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanelBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldBookAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanelBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldBookQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanelBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldBookAvailable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonBookSearch)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonBookClearFields)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanelBookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonBookAdd)
-                            .addComponent(jButtonBookDelete)
-                            .addComponent(jButtonBookUpdate))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelBookInfo)))
-                .addContainerGap())
-        );
-
-        jPanelReader.setBackground(new java.awt.Color(255, 255, 255));
-
-        jTableLib1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jTableLib1.setForeground(new java.awt.Color(0, 18, 91));
-        jTableLib1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "ID", "Title", "Fisrt author", "Quantity", "Available"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTableLib1.setGridColor(new java.awt.Color(0, 18, 91));
-        jTableLib1.setSelectionBackground(new java.awt.Color(0, 18, 91));
-        jScrollPane2.setViewportView(jTableLib1);
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 18, 91));
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel3.setText("ID:");
+        jLabelID.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelID.setForeground(new java.awt.Color(0, 18, 91));
+        jLabelID.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabelID.setText("ID:");
+        jPanelInput.add(jLabelID);
 
         jTextFieldReaderID.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jTextFieldReaderID.setForeground(new java.awt.Color(0, 18, 91));
+        jTextFieldReaderID.setBorder(null);
+        jPanelInput.add(jTextFieldReaderID);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(0, 18, 91));
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel10.setText("First name:");
+        jLabelFname.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelFname.setForeground(new java.awt.Color(0, 18, 91));
+        jLabelFname.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabelFname.setText("First name:");
+        jPanelInput.add(jLabelFname);
 
         jTextFieldReaderFname.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jTextFieldReaderFname.setForeground(new java.awt.Color(0, 18, 91));
+        jTextFieldReaderFname.setBorder(null);
+        jPanelInput.add(jTextFieldReaderFname);
 
-        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(0, 18, 91));
-        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel11.setText("Last name:");
+        jLabelLname.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelLname.setForeground(new java.awt.Color(0, 18, 91));
+        jLabelLname.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabelLname.setText("Last name:");
+        jPanelInput.add(jLabelLname);
 
         jTextFieldReaderLname.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jTextFieldReaderLname.setForeground(new java.awt.Color(0, 18, 91));
+        jTextFieldReaderLname.setBorder(null);
+        jPanelInput.add(jTextFieldReaderLname);
 
-        jButtonReaderAdd.setBackground(new java.awt.Color(0, 18, 91));
-        jButtonReaderAdd.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButtonReaderAdd.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonReaderAdd.setText("Add");
-        jButtonReaderAdd.setBorder(null);
-        jButtonReaderAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButtonReaderAdd.addActionListener(new java.awt.event.ActionListener() {
+        jPanelButton.setLayout(new java.awt.GridLayout(3, 1, 50, 15));
+
+        jButtonReaderClear.setBackground(new java.awt.Color(0, 18, 91));
+        jButtonReaderClear.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButtonReaderClear.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonReaderClear.setText("Clear & Refresh");
+        jButtonReaderClear.setBorder(null);
+        jButtonReaderClear.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButtonReaderClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonReaderAddActionPerformed(evt);
+                jButtonReaderClearActionPerformed(evt);
             }
         });
-
-        jButtonReaderClearField.setBackground(new java.awt.Color(0, 18, 91));
-        jButtonReaderClearField.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButtonReaderClearField.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonReaderClearField.setText("Clear Fields");
-        jButtonReaderClearField.setBorder(null);
-        jButtonReaderClearField.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButtonReaderClearField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonReaderClearFieldActionPerformed(evt);
-            }
-        });
-
-        jButtonReaderDelete.setBackground(new java.awt.Color(0, 18, 91));
-        jButtonReaderDelete.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButtonReaderDelete.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonReaderDelete.setText("Delete");
-        jButtonReaderDelete.setBorder(null);
-        jButtonReaderDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButtonReaderDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonReaderDeleteActionPerformed(evt);
-            }
-        });
-
-        jButtonReaderUpdate.setBackground(new java.awt.Color(0, 18, 91));
-        jButtonReaderUpdate.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButtonReaderUpdate.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonReaderUpdate.setText("Update");
-        jButtonReaderUpdate.setBorder(null);
-        jButtonReaderUpdate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButtonReaderUpdate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonReaderUpdateActionPerformed(evt);
-            }
-        });
+        jPanelButton.add(jButtonReaderClear);
 
         jButtonReaderSearch.setBackground(new java.awt.Color(0, 18, 91));
         jButtonReaderSearch.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -379,148 +247,828 @@ public class LibrarianForm extends javax.swing.JFrame {
                 jButtonReaderSearchActionPerformed(evt);
             }
         });
+        jPanelButton.add(jButtonReaderSearch);
 
-        jLabelReaderInfo.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
-        jLabelReaderInfo.setText("<html>You are managing Readers.  <br>Make sure you know what you are performing.  <br>From here, you can: <br>- Search for users by id, first name and last name <br>- Add new readers <br>- Delete reader by id <br>- Update reader information</html>");
+        jPanel2.setLayout(new java.awt.GridLayout(1, 3, 20, 0));
 
-        javax.swing.GroupLayout jPanelReaderLayout = new javax.swing.GroupLayout(jPanelReader);
-        jPanelReader.setLayout(jPanelReaderLayout);
-        jPanelReaderLayout.setHorizontalGroup(
-            jPanelReaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelReaderLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanelReaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanelReaderLayout.createSequentialGroup()
-                        .addGroup(jPanelReaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelReaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelReaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jTextFieldReaderFname, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextFieldReaderID, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jTextFieldReaderLname, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelReaderLayout.createSequentialGroup()
-                        .addComponent(jButtonReaderAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonReaderUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonReaderDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButtonReaderClearField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonReaderSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelReaderInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-        jPanelReaderLayout.setVerticalGroup(
-            jPanelReaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelReaderLayout.createSequentialGroup()
+        jButtonReaderAdd.setBackground(new java.awt.Color(0, 18, 91));
+        jButtonReaderAdd.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButtonReaderAdd.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonReaderAdd.setText("Add");
+        jButtonReaderAdd.setBorder(null);
+        jButtonReaderAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButtonReaderAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonReaderAddActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButtonReaderAdd);
+
+        jButtonReaderUpdate.setBackground(new java.awt.Color(0, 18, 91));
+        jButtonReaderUpdate.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButtonReaderUpdate.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonReaderUpdate.setText("Update");
+        jButtonReaderUpdate.setBorder(null);
+        jButtonReaderUpdate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButtonReaderUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonReaderUpdateActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButtonReaderUpdate);
+
+        jButtonReaderDelete.setBackground(new java.awt.Color(0, 18, 91));
+        jButtonReaderDelete.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButtonReaderDelete.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonReaderDelete.setText("Delete");
+        jButtonReaderDelete.setBorder(null);
+        jButtonReaderDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButtonReaderDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonReaderDeleteActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButtonReaderDelete);
+
+        jPanelButton.add(jPanel2);
+
+        jLabelReaderInfo.setText("<html>You are managing Librarians. \n<br>Make sure you know what you are performing. \n<br>From here, you can:\n<br>- Search for librarians by id, first name, last name and username\n<br>- Add new librarian\n<br>- Delete librarian by providing id or username\n<br>- Update librarian information</html>");
+
+        javax.swing.GroupLayout jPanelToolLayout = new javax.swing.GroupLayout(jPanelTool);
+        jPanelTool.setLayout(jPanelToolLayout);
+        jPanelToolLayout.setHorizontalGroup(
+            jPanelToolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelToolLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelReaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanelReaderLayout.createSequentialGroup()
-                        .addGroup(jPanelReaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldReaderID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanelReaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldReaderFname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanelReaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldReaderLname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(84, 84, 84)
-                        .addComponent(jButtonReaderSearch)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonReaderClearField)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanelReaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonReaderAdd)
-                            .addComponent(jButtonReaderDelete)
-                            .addComponent(jButtonReaderUpdate))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelReaderInfo)))
+                .addGroup(jPanelToolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelReaderInfo, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
+                    .addComponent(jPanelInput, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanelToolLayout.setVerticalGroup(
+            jPanelToolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelToolLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelInput, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabelReaderInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        jMenu1.setText("Reader");
-        jMenuBar1.add(jMenu1);
+        jPanelReader.add(jPanelTool);
 
-        jMenu2.setText("Book");
-        jMenuBar1.add(jMenu2);
+        getContentPane().add(jPanelReader);
 
-        jMenu3.setText("Issue");
-        jMenuBar1.add(jMenu3);
+        jPanelBook.setLayout(new java.awt.GridLayout(1, 2, 30, 30));
+
+        jScrollPane2.setBackground(new java.awt.Color(255, 255, 255));
+
+        jTableBook.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jTableBook.setForeground(new java.awt.Color(0, 18, 91));
+        jTableBook.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Title", "First Author", "Quantity", "Available"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTableBook.setGridColor(new java.awt.Color(0, 18, 91));
+        jTableBook.setRowHeight(30);
+        jTableBook.setRowMargin(2);
+        jTableBook.setSelectionBackground(new java.awt.Color(0, 18, 91));
+        jTableBook.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(jTableBook);
+
+        jPanelBook.add(jScrollPane2);
+
+        jPanelInput1.setLayout(new java.awt.GridLayout(5, 2, 20, 10));
+
+        jLabelID1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelID1.setForeground(new java.awt.Color(0, 18, 91));
+        jLabelID1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabelID1.setText("ID:");
+        jPanelInput1.add(jLabelID1);
+
+        jTextFieldBookID.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextFieldBookID.setForeground(new java.awt.Color(0, 18, 91));
+        jTextFieldBookID.setBorder(null);
+        jPanelInput1.add(jTextFieldBookID);
+
+        jLabelBookTitle.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelBookTitle.setForeground(new java.awt.Color(0, 18, 91));
+        jLabelBookTitle.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabelBookTitle.setText("Title:");
+        jPanelInput1.add(jLabelBookTitle);
+
+        jTextFieldBookTitle.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextFieldBookTitle.setForeground(new java.awt.Color(0, 18, 91));
+        jTextFieldBookTitle.setBorder(null);
+        jPanelInput1.add(jTextFieldBookTitle);
+
+        jLabelBookAuthor.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelBookAuthor.setForeground(new java.awt.Color(0, 18, 91));
+        jLabelBookAuthor.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabelBookAuthor.setText("First author:");
+        jPanelInput1.add(jLabelBookAuthor);
+
+        jTextFieldBookAuthor.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextFieldBookAuthor.setForeground(new java.awt.Color(0, 18, 91));
+        jTextFieldBookAuthor.setBorder(null);
+        jPanelInput1.add(jTextFieldBookAuthor);
+
+        jLabelBookQuantity.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelBookQuantity.setForeground(new java.awt.Color(0, 18, 91));
+        jLabelBookQuantity.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabelBookQuantity.setText("Quantity:");
+        jPanelInput1.add(jLabelBookQuantity);
+
+        jTextFieldBookQuantity.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextFieldBookQuantity.setForeground(new java.awt.Color(0, 18, 91));
+        jTextFieldBookQuantity.setBorder(null);
+        jPanelInput1.add(jTextFieldBookQuantity);
+
+        jLabelBookAvailable.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelBookAvailable.setForeground(new java.awt.Color(0, 18, 91));
+        jLabelBookAvailable.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabelBookAvailable.setText("Available:");
+        jPanelInput1.add(jLabelBookAvailable);
+
+        jTextFieldBookAvailable.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextFieldBookAvailable.setForeground(new java.awt.Color(0, 18, 91));
+        jTextFieldBookAvailable.setBorder(null);
+        jPanelInput1.add(jTextFieldBookAvailable);
+
+        jPanelButton1.setLayout(new java.awt.GridLayout(3, 1, 50, 15));
+
+        jButtonBookClear.setBackground(new java.awt.Color(0, 18, 91));
+        jButtonBookClear.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButtonBookClear.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonBookClear.setText("Clear & Refresh");
+        jButtonBookClear.setBorder(null);
+        jButtonBookClear.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButtonBookClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBookClearActionPerformed(evt);
+            }
+        });
+        jPanelButton1.add(jButtonBookClear);
+
+        jButtonBookSearch.setBackground(new java.awt.Color(0, 18, 91));
+        jButtonBookSearch.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButtonBookSearch.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonBookSearch.setText("Search");
+        jButtonBookSearch.setBorder(null);
+        jButtonBookSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButtonBookSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBookSearchActionPerformed(evt);
+            }
+        });
+        jPanelButton1.add(jButtonBookSearch);
+
+        jPanel3.setLayout(new java.awt.GridLayout(1, 3, 20, 0));
+
+        jButtonBookAdd.setBackground(new java.awt.Color(0, 18, 91));
+        jButtonBookAdd.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButtonBookAdd.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonBookAdd.setText("Add");
+        jButtonBookAdd.setBorder(null);
+        jButtonBookAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButtonBookAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBookAddActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButtonBookAdd);
+
+        jButtonBookUpdate.setBackground(new java.awt.Color(0, 18, 91));
+        jButtonBookUpdate.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButtonBookUpdate.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonBookUpdate.setText("Update");
+        jButtonBookUpdate.setBorder(null);
+        jButtonBookUpdate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButtonBookUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBookUpdateActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButtonBookUpdate);
+
+        jButtonBookDelete.setBackground(new java.awt.Color(0, 18, 91));
+        jButtonBookDelete.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButtonBookDelete.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonBookDelete.setText("Delete");
+        jButtonBookDelete.setBorder(null);
+        jButtonBookDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButtonBookDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBookDeleteActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButtonBookDelete);
+
+        jPanelButton1.add(jPanel3);
+
+        jLabelBookInfo.setText("<html>You are managing Librarians.  <br>Make sure you know what you are performing.  <br>From here, you can: <br>- Search for librarians by id, first name, last name and username <br>- Add new librarian <br>- Delete librarian by providing id or username <br>- Update librarian information</html>");
+
+        javax.swing.GroupLayout jPanelTool1Layout = new javax.swing.GroupLayout(jPanelTool1);
+        jPanelTool1.setLayout(jPanelTool1Layout);
+        jPanelTool1Layout.setHorizontalGroup(
+            jPanelTool1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelTool1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelTool1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelBookInfo, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+                    .addComponent(jPanelInput1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanelTool1Layout.setVerticalGroup(
+            jPanelTool1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelTool1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelInput1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanelButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabelBookInfo, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jPanelBook.add(jPanelTool1);
+
+        getContentPane().add(jPanelBook);
+
+        jPanelIssue.setLayout(new java.awt.GridLayout(1, 2, 30, 30));
+
+        jScrollPane3.setBackground(new java.awt.Color(255, 255, 255));
+
+        jTableIssue.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jTableIssue.setForeground(new java.awt.Color(0, 18, 91));
+        jTableIssue.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Book ID", "Reader ID", "Checkout Date", "Return Date", "Fine"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTableIssue.setGridColor(new java.awt.Color(0, 18, 91));
+        jTableIssue.setRowHeight(30);
+        jTableIssue.setRowMargin(2);
+        jTableIssue.setSelectionBackground(new java.awt.Color(0, 18, 91));
+        jTableIssue.getTableHeader().setReorderingAllowed(false);
+        jScrollPane3.setViewportView(jTableIssue);
+
+        jPanelIssue.add(jScrollPane3);
+
+        jPanelInput2.setLayout(new java.awt.GridLayout(5, 2, 20, 10));
+
+        jLabelID2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelID2.setForeground(new java.awt.Color(0, 18, 91));
+        jLabelID2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabelID2.setText("ID:");
+        jPanelInput2.add(jLabelID2);
+
+        jTextFieldIssueID.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextFieldIssueID.setForeground(new java.awt.Color(0, 18, 91));
+        jTextFieldIssueID.setBorder(null);
+        jPanelInput2.add(jTextFieldIssueID);
+
+        jLabelFname2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelFname2.setForeground(new java.awt.Color(0, 18, 91));
+        jLabelFname2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabelFname2.setText("Book ID:");
+        jPanelInput2.add(jLabelFname2);
+
+        jTextFieldIssueBookID.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextFieldIssueBookID.setForeground(new java.awt.Color(0, 18, 91));
+        jTextFieldIssueBookID.setBorder(null);
+        jPanelInput2.add(jTextFieldIssueBookID);
+
+        jLabelLname2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelLname2.setForeground(new java.awt.Color(0, 18, 91));
+        jLabelLname2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabelLname2.setText("Reader ID:");
+        jPanelInput2.add(jLabelLname2);
+
+        jTextFieldIssueReaderID.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTextFieldIssueReaderID.setForeground(new java.awt.Color(0, 18, 91));
+        jTextFieldIssueReaderID.setBorder(null);
+        jTextFieldIssueReaderID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldIssueReaderIDActionPerformed(evt);
+            }
+        });
+        jPanelInput2.add(jTextFieldIssueReaderID);
+
+        jLabelLname3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelLname3.setForeground(new java.awt.Color(0, 18, 91));
+        jLabelLname3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabelLname3.setText("Checkout Date:");
+        jPanelInput2.add(jLabelLname3);
+
+        jFormattedTextFieldODate.setBorder(null);
+        jFormattedTextFieldODate.setForeground(new java.awt.Color(0, 18, 91));
+        jFormattedTextFieldODate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("y-MM-dd"))));
+        jFormattedTextFieldODate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jPanelInput2.add(jFormattedTextFieldODate);
+
+        jLabelLname4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelLname4.setForeground(new java.awt.Color(0, 18, 91));
+        jLabelLname4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabelLname4.setText("Return Date:");
+        jPanelInput2.add(jLabelLname4);
+
+        jFormattedTextFieldRDate.setBorder(null);
+        jFormattedTextFieldRDate.setForeground(new java.awt.Color(0, 18, 91));
+        jFormattedTextFieldRDate.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("y-MM-dd"))));
+        jFormattedTextFieldRDate.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jPanelInput2.add(jFormattedTextFieldRDate);
+
+        jPanelButton2.setLayout(new java.awt.GridLayout(3, 1, 50, 15));
+
+        jButtonIssueClear.setBackground(new java.awt.Color(0, 18, 91));
+        jButtonIssueClear.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButtonIssueClear.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonIssueClear.setText("Clear & Refresh");
+        jButtonIssueClear.setBorder(null);
+        jButtonIssueClear.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButtonIssueClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonIssueClearActionPerformed(evt);
+            }
+        });
+        jPanelButton2.add(jButtonIssueClear);
+
+        jButtonIssueSearch.setBackground(new java.awt.Color(0, 18, 91));
+        jButtonIssueSearch.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButtonIssueSearch.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonIssueSearch.setText("Search");
+        jButtonIssueSearch.setBorder(null);
+        jButtonIssueSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButtonIssueSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonIssueSearchActionPerformed(evt);
+            }
+        });
+        jPanelButton2.add(jButtonIssueSearch);
+
+        jPanel4.setLayout(new java.awt.GridLayout(1, 3, 20, 0));
+
+        jButtonIssueAdd.setBackground(new java.awt.Color(0, 18, 91));
+        jButtonIssueAdd.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButtonIssueAdd.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonIssueAdd.setText("Add");
+        jButtonIssueAdd.setBorder(null);
+        jButtonIssueAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButtonIssueAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonIssueAddActionPerformed(evt);
+            }
+        });
+        jPanel4.add(jButtonIssueAdd);
+
+        jButtonIssueUpdate.setBackground(new java.awt.Color(0, 18, 91));
+        jButtonIssueUpdate.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButtonIssueUpdate.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonIssueUpdate.setText("Update");
+        jButtonIssueUpdate.setBorder(null);
+        jButtonIssueUpdate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButtonIssueUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonIssueUpdateActionPerformed(evt);
+            }
+        });
+        jPanel4.add(jButtonIssueUpdate);
+
+        jButtonIssueDelete.setBackground(new java.awt.Color(0, 18, 91));
+        jButtonIssueDelete.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButtonIssueDelete.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonIssueDelete.setText("Delete");
+        jButtonIssueDelete.setBorder(null);
+        jButtonIssueDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButtonIssueDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonIssueDeleteActionPerformed(evt);
+            }
+        });
+        jPanel4.add(jButtonIssueDelete);
+
+        jPanelButton2.add(jPanel4);
+
+        jLabelInfo2.setText("<html>You are managing Librarians. \n<br>Make sure you know what you are performing. \n<br>From here, you can:\n<br>- Search for librarians by id, first name, last name and username\n<br>- Add new librarian\n<br>- Delete librarian by providing id or username\n<br>- Update librarian information</html>");
+
+        javax.swing.GroupLayout jPanelTool2Layout = new javax.swing.GroupLayout(jPanelTool2);
+        jPanelTool2.setLayout(jPanelTool2Layout);
+        jPanelTool2Layout.setHorizontalGroup(
+            jPanelTool2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelTool2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelTool2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelInfo2, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
+                    .addComponent(jPanelInput2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanelTool2Layout.setVerticalGroup(
+            jPanelTool2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelTool2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelInput2, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanelButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabelInfo2, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jPanelIssue.add(jPanelTool2);
+
+        getContentPane().add(jPanelIssue);
+
+        jMenuReader.setForeground(new java.awt.Color(0, 18, 91));
+        jMenuReader.setText("Reader");
+        jMenuReader.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenuReader.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jMenuReader.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jMenuReader.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jMenuReader.setPreferredSize(new java.awt.Dimension(100, 30));
+        jMenuReader.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuReaderMouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(jMenuReader);
+
+        jMenuBook.setForeground(new java.awt.Color(0, 18, 91));
+        jMenuBook.setText("Book");
+        jMenuBook.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenuBook.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jMenuBook.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jMenuBook.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jMenuBook.setMinimumSize(new java.awt.Dimension(100, 30));
+        jMenuBook.setPreferredSize(new java.awt.Dimension(100, 30));
+        jMenuBook.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuBookMouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(jMenuBook);
+
+        jMenuIssue.setForeground(new java.awt.Color(0, 18, 91));
+        jMenuIssue.setText("Issue");
+        jMenuIssue.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenuIssue.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jMenuIssue.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jMenuIssue.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jMenuIssue.setPreferredSize(new java.awt.Dimension(100, 30));
+        jMenuIssue.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuIssueMouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(jMenuIssue);
 
         setJMenuBar(jMenuBar1);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelBook, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jPanelReader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addContainerGap()))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelBook, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanelReader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap()))
-        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonBookAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBookAddActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonBookAddActionPerformed
-
-    private void jButtonBookClearFieldsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBookClearFieldsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonBookClearFieldsActionPerformed
-
-    private void jButtonBookDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBookDeleteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonBookDeleteActionPerformed
-
-    private void jButtonBookUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBookUpdateActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonBookUpdateActionPerformed
-
-    private void jButtonBookSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBookSearchActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonBookSearchActionPerformed
-
-    private void jButtonReaderAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReaderAddActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonReaderAddActionPerformed
-
-    private void jButtonReaderClearFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReaderClearFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonReaderClearFieldActionPerformed
-
-    private void jButtonReaderDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReaderDeleteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonReaderDeleteActionPerformed
-
-    private void jButtonReaderUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReaderUpdateActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonReaderUpdateActionPerformed
+    private void jButtonReaderClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReaderClearActionPerformed
+        readerRefresh(reader.getAllReaders());
+    }//GEN-LAST:event_jButtonReaderClearActionPerformed
 
     private void jButtonReaderSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReaderSearchActionPerformed
-        // TODO add your handling code here:
+        String fname = jTextFieldReaderFname.getText();
+        String lname = jTextFieldReaderID.getText();
+        int id = -1;
+        try {
+            id = Integer.valueOf(jTextFieldReaderID.getText());
+        } catch (NumberFormatException ex) {
+            if (fname.isBlank() && lname.isBlank()) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " - Enter number only for ID. You can search by ID, First name, Last name.", "ID Invalid", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+        DefaultTableModel table = reader.searchReader(id, fname, lname);
+        if (table == null) {
+            JOptionPane.showMessageDialog(rootPane, "Cannot search for users. Please try again!", "Search Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            readerRefresh(table);
+        }
     }//GEN-LAST:event_jButtonReaderSearchActionPerformed
 
+    private void jButtonReaderAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReaderAddActionPerformed
+        String fname = jTextFieldReaderFname.getText();
+        String lname = jTextFieldReaderLname.getText();
+        
+        if (fname.isBlank() || lname.isBlank()) {
+            JOptionPane.showMessageDialog(rootPane, "Required fields: First name, Last name", "Empty Field", JOptionPane.WARNING_MESSAGE);
+        } else {
+            if (reader.addReader(fname, lname)) {
+                readerRefresh(reader.getAllReaders());
+            } else {
+                JOptionPane.showMessageDialog(rootPane, fname + " " + lname + " not added", "Add Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        
+    }//GEN-LAST:event_jButtonReaderAddActionPerformed
+
+    private void jButtonReaderUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReaderUpdateActionPerformed
+        String fname = jTextFieldReaderFname.getText();
+        String lname = jTextFieldReaderLname.getText();
+        try {
+            int id = Integer.valueOf(jTextFieldReaderID.getText());
+        
+            if (fname.isBlank() || lname.isBlank()) {
+                JOptionPane.showMessageDialog(rootPane, "Required fields: ID, First name, Last name", "Empty Field", JOptionPane.WARNING_MESSAGE);
+            } else {
+                if (reader.updateReader(id, fname, lname)) {
+                    readerRefresh(reader.getAllReaders());
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, jTextFieldReaderID.getText() + " not updated", "Add Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " - Enter number only for ID", "ID Invalid", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonReaderUpdateActionPerformed
+
+    private void jButtonReaderDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReaderDeleteActionPerformed
+        try {
+            int id = Integer.valueOf(jTextFieldReaderID.getText());
+        
+            if (JOptionPane.showConfirmDialog(rootPane, "Delete Reader " + jTextFieldReaderID.getText() + "?", "Delete Confirm", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+                if (reader.deleteReader(id)) {
+                    readerRefresh(reader.getAllReaders());
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, jTextFieldReaderID.getText() + " not deleted", "Delete Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " - Enter number only for ID", "ID Invalid", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonReaderDeleteActionPerformed
+
+    private void jButtonBookClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBookClearActionPerformed
+        bookRefresh(book.getAllBooks());
+    }//GEN-LAST:event_jButtonBookClearActionPerformed
+
+    private void jButtonBookSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBookSearchActionPerformed
+        String title = jTextFieldBookTitle.getText();
+        String fauthor = jTextFieldBookAuthor.getText();
+        int id = -1;
+        try {
+            id = Integer.valueOf(jTextFieldBookID.getText());
+        } catch (NumberFormatException ex) {
+            if (title.isBlank() && fauthor.isBlank()) {
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " - Enter number only for ID. You can search by ID, Title, First Author", "ID Invalid", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+        DefaultTableModel table = book.searchBook(id, title, fauthor);
+        if (table == null) {
+            JOptionPane.showMessageDialog(rootPane, "Cannot search for books. Please try again!", "Search Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            bookRefresh(table);
+        }
+    }//GEN-LAST:event_jButtonBookSearchActionPerformed
+
+    private void jButtonBookAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBookAddActionPerformed
+        String title = jTextFieldBookTitle.getText();
+        String fauthor = jTextFieldBookAuthor.getText();
+        try {
+            int quantity = Integer.valueOf(jTextFieldBookQuantity.getText());
+            
+            if (quantity <= 0) {
+                throw new Exception("Negative number");
+            }
+        
+            if (title.isBlank() || fauthor.isBlank()) {
+                JOptionPane.showMessageDialog(rootPane, "Required fields: Title, First Author, Quantity", "Empty Field", JOptionPane.WARNING_MESSAGE);
+            } else {
+                if (book.addBook(title, fauthor, quantity, quantity)) {
+                    bookRefresh(book.getAllBooks());
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, title + " not added", "Add Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " - Enter positive number only for quantity", "Quantity invalid", HEIGHT);
+        }
+    }//GEN-LAST:event_jButtonBookAddActionPerformed
+
+    private void jButtonBookUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBookUpdateActionPerformed
+        String title = jTextFieldBookTitle.getText();
+        String fauthor = jTextFieldBookAuthor.getText();
+        try {
+            int quantity = Integer.valueOf(jTextFieldBookQuantity.getText());
+            int available = Integer.valueOf(jTextFieldBookAvailable.getText());
+            int id = Integer.valueOf(jTextFieldBookID.getText());
+        
+            if (quantity <= 0 || available < 0) {
+                throw new Exception("Non positive number");
+            }
+            
+            if (title.isBlank() || fauthor.isBlank()) {
+                JOptionPane.showMessageDialog(rootPane, "Required fields: Title, First Author, Quantity, Available", "Empty Field", JOptionPane.WARNING_MESSAGE);
+            } else if (available > quantity) {
+                JOptionPane.showMessageDialog(rootPane, "Number of books available bigger than total number of books", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            } else {
+                if (book.updateBook(id, title, fauthor, quantity, available)) {
+                    bookRefresh(book.getAllBooks());
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, jTextFieldBookID.getText() + " not updated", "Update Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Invalid Input", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonBookUpdateActionPerformed
+
+    private void jButtonBookDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBookDeleteActionPerformed
+        try {
+            int id = Integer.valueOf(jTextFieldBookID.getText());
+
+            if (book.deleteBook(id)) {
+                bookRefresh(book.getAllBooks());
+            } else {
+                JOptionPane.showMessageDialog(rootPane, jTextFieldBookID.getText() + " not deleted", "Delete Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (HeadlessException | NumberFormatException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Invalid Input", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonBookDeleteActionPerformed
+
+    private void jButtonIssueClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIssueClearActionPerformed
+        issueRefresh(issue.getAllIssues());
+    }//GEN-LAST:event_jButtonIssueClearActionPerformed
+
+    private void jButtonIssueSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIssueSearchActionPerformed
+        String checkoutDate = jFormattedTextFieldODate.getText();
+        int readerID = -1;
+        int bookID = -1;
+        int id = -1;
+        
+        try {
+            readerID = Integer.valueOf(jTextFieldIssueReaderID.getText());
+        } catch (NumberFormatException exReaderID) {
+            try {
+                bookID = Integer.valueOf(jTextFieldIssueBookID.getText());
+            } catch (NumberFormatException exBookID) {
+                try {
+                    id = Integer.valueOf(jTextFieldIssueID.getText());
+                } catch (NumberFormatException exID) {
+                    if (checkoutDate.isBlank()) {
+                        JOptionPane.showMessageDialog(rootPane, "Invalid Input. You can search by ID, Book ID, Reader ID, Checkout Date.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+            }
+            
+        }
+        DefaultTableModel table = issue.searchIssue(id, bookID, readerID);
+        
+        if (table == null) {
+            JOptionPane.showMessageDialog(rootPane, "Cannot search for issues. Please try again!", "Search Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            issueRefresh(table);
+        }
+    }//GEN-LAST:event_jButtonIssueSearchActionPerformed
+
+    private void jButtonIssueAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIssueAddActionPerformed
+        try {
+            int readerID = Integer.valueOf(jTextFieldIssueReaderID.getText());
+            int bookID = Integer.valueOf(jTextFieldIssueBookID.getText());
+            String checkoutDate = jFormattedTextFieldODate.getText();
+        
+            if (checkoutDate.isBlank()) {
+                JOptionPane.showMessageDialog(rootPane, "Required fields: Book ID, reader ID, Checkout Date", "Empty Field", JOptionPane.WARNING_MESSAGE);
+            } else {
+                if (issue.addIssue(bookID, readerID, checkoutDate)) {
+                    issueRefresh(issue.getAllIssues());
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, jTextFieldIssueID.getText() + " not added", "Add Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            
+        } catch (HeadlessException | NumberFormatException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Invalid Input", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonIssueAddActionPerformed
+
+    private void jButtonIssueUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIssueUpdateActionPerformed
+        try {
+            int readerID = Integer.valueOf(jTextFieldIssueReaderID.getText());
+            int bookID = Integer.valueOf(jTextFieldIssueBookID.getText());
+            int id = Integer.valueOf(jTextFieldIssueID.getText());
+            String checkoutDate = jFormattedTextFieldODate.getText();
+            String returnDate = jFormattedTextFieldRDate.getText();
+            
+            if (checkoutDate.isBlank() || returnDate.isBlank()) {
+                JOptionPane.showMessageDialog(rootPane, "Required fields: Id, Book ID, reader ID, Checkout Date, Return Date", "Empty Field", JOptionPane.WARNING_MESSAGE);
+            } else {
+                if (issue.updateIssue(id, bookID, readerID, checkoutDate, returnDate)) {
+                    issueRefresh(issue.getAllIssues());
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, jTextFieldIssueID.getText() + " not updated", "Update Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } catch (HeadlessException | NumberFormatException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " - Number only", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonIssueUpdateActionPerformed
+
+    private void jButtonIssueDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIssueDeleteActionPerformed
+        try {
+            int id = Integer.valueOf(jTextFieldIssueID.getText());
+
+            if (issue.deleteIssue(id)) {
+                issueRefresh(issue.getAllIssues());
+            } else {
+                JOptionPane.showMessageDialog(rootPane, jTextFieldIssueID.getText() + " not deleted", "Delete Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (HeadlessException | NumberFormatException ex) {
+            JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Invalid Input", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonIssueDeleteActionPerformed
+
+    private void jTextFieldIssueReaderIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldIssueReaderIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldIssueReaderIDActionPerformed
+
+    private void jMenuBookMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuBookMouseClicked
+        selectBook();
+    }//GEN-LAST:event_jMenuBookMouseClicked
+
+    private void jMenuReaderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuReaderMouseClicked
+        selectReader();
+    }//GEN-LAST:event_jMenuReaderMouseClicked
+
+    private void jMenuIssueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuIssueMouseClicked
+        selectIssue();
+    }//GEN-LAST:event_jMenuIssueMouseClicked
+
+    private void readerRefresh(DefaultTableModel table) {
+        jTextFieldReaderID.setText("");
+        jTextFieldReaderFname.setText("");
+        jTextFieldReaderLname.setText("");
+        jTableReader.setModel(table);
+    }
+    
+    private void bookRefresh(DefaultTableModel table) {
+        jTextFieldBookID.setText("");
+        jTextFieldBookAuthor.setText("");
+        jTextFieldBookTitle.setText("");
+        jTextFieldBookQuantity.setText("");
+        jTextFieldBookAvailable.setText("");
+        jTableBook.setModel(table);
+    }
+    
+    private void issueRefresh(DefaultTableModel table) {
+        jTextFieldIssueID.setText("");
+        jTextFieldIssueReaderID.setText("");
+        jTextFieldIssueBookID.setText("");
+        jFormattedTextFieldODate.setText("");
+        jFormattedTextFieldRDate.setText("");
+        jTableIssue.setModel(table);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -565,40 +1113,71 @@ public class LibrarianForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonBookAdd;
-    private javax.swing.JButton jButtonBookClearFields;
+    private javax.swing.JButton jButtonBookClear;
     private javax.swing.JButton jButtonBookDelete;
     private javax.swing.JButton jButtonBookSearch;
     private javax.swing.JButton jButtonBookUpdate;
+    private javax.swing.JButton jButtonIssueAdd;
+    private javax.swing.JButton jButtonIssueClear;
+    private javax.swing.JButton jButtonIssueDelete;
+    private javax.swing.JButton jButtonIssueSearch;
+    private javax.swing.JButton jButtonIssueUpdate;
     private javax.swing.JButton jButtonReaderAdd;
-    private javax.swing.JButton jButtonReaderClearField;
+    private javax.swing.JButton jButtonReaderClear;
     private javax.swing.JButton jButtonReaderDelete;
     private javax.swing.JButton jButtonReaderSearch;
     private javax.swing.JButton jButtonReaderUpdate;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
+    private javax.swing.JFormattedTextField jFormattedTextFieldODate;
+    private javax.swing.JFormattedTextField jFormattedTextFieldRDate;
+    private javax.swing.JLabel jLabelBookAuthor;
+    private javax.swing.JLabel jLabelBookAvailable;
     private javax.swing.JLabel jLabelBookInfo;
+    private javax.swing.JLabel jLabelBookQuantity;
+    private javax.swing.JLabel jLabelBookTitle;
+    private javax.swing.JLabel jLabelFname;
+    private javax.swing.JLabel jLabelFname2;
+    private javax.swing.JLabel jLabelID;
+    private javax.swing.JLabel jLabelID1;
+    private javax.swing.JLabel jLabelID2;
+    private javax.swing.JLabel jLabelInfo2;
+    private javax.swing.JLabel jLabelLname;
+    private javax.swing.JLabel jLabelLname2;
+    private javax.swing.JLabel jLabelLname3;
+    private javax.swing.JLabel jLabelLname4;
     private javax.swing.JLabel jLabelReaderInfo;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu jMenuBook;
+    private javax.swing.JMenu jMenuIssue;
+    private javax.swing.JMenu jMenuReader;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanelBook;
+    private javax.swing.JPanel jPanelButton;
+    private javax.swing.JPanel jPanelButton1;
+    private javax.swing.JPanel jPanelButton2;
+    private javax.swing.JPanel jPanelInput;
+    private javax.swing.JPanel jPanelInput1;
+    private javax.swing.JPanel jPanelInput2;
+    private javax.swing.JPanel jPanelIssue;
     private javax.swing.JPanel jPanelReader;
+    private javax.swing.JPanel jPanelTool;
+    private javax.swing.JPanel jPanelTool1;
+    private javax.swing.JPanel jPanelTool2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTableLib;
-    private javax.swing.JTable jTableLib1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTableBook;
+    private javax.swing.JTable jTableIssue;
+    private javax.swing.JTable jTableReader;
     private javax.swing.JTextField jTextFieldBookAuthor;
     private javax.swing.JTextField jTextFieldBookAvailable;
     private javax.swing.JTextField jTextFieldBookID;
     private javax.swing.JTextField jTextFieldBookQuantity;
     private javax.swing.JTextField jTextFieldBookTitle;
+    private javax.swing.JTextField jTextFieldIssueBookID;
+    private javax.swing.JTextField jTextFieldIssueID;
+    private javax.swing.JTextField jTextFieldIssueReaderID;
     private javax.swing.JTextField jTextFieldReaderFname;
     private javax.swing.JTextField jTextFieldReaderID;
     private javax.swing.JTextField jTextFieldReaderLname;

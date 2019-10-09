@@ -50,7 +50,7 @@ public class Book {
             }
             return table;
         } catch (SQLException ex) {
-            Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Librarian.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
@@ -80,7 +80,7 @@ public class Book {
             
             return table;
         } catch (SQLException ex) {
-            Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Librarian.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
@@ -88,7 +88,7 @@ public class Book {
     boolean addBook(String title, String fauthor, int quantity, int available) {
         try {
             PreparedStatement ps;
-            String query = "INSERT INTO `books`(`title`, `first_author`, `quantity`, `available`, `type`) VALUES (?,?,?,?)";
+            String query = "INSERT INTO `books`(`title`, `first_author`, `quantity`, `available`) VALUES (?,?,?,?)";
             
             ps = MyConnection.createConnection().prepareStatement(query);
             ps.setString(1, title.toLowerCase());
@@ -99,7 +99,7 @@ public class Book {
             return ps.executeUpdate() > 0;
             
         } catch (SQLException ex) {
-            Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Librarian.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
@@ -115,7 +115,7 @@ public class Book {
             return ps.executeUpdate() > 0;
             
         } catch (SQLException ex) {
-            Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Librarian.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
@@ -123,11 +123,11 @@ public class Book {
     boolean updateBook(int id, String title, String fauthor, int quantity, int available) {
         try {
             PreparedStatement ps;
-            String query = "UPDATE `books` SET `title`=?,`fauthor`=?,`quantity`=?,`available`=? WHERE `id`=?";
+            String query = "UPDATE `books` SET `title`=?,`first_author`=?,`quantity`=?,`available`=? WHERE `id`=?";
             
             ps = MyConnection.createConnection().prepareStatement(query);
-            ps.setString(1, title);
-            ps.setString(2, fauthor);
+            ps.setString(1, title.toLowerCase());
+            ps.setString(2, fauthor.toLowerCase());
             ps.setInt(3, quantity);
             ps.setInt(4, available);
             ps.setInt(5, id);
@@ -135,9 +135,76 @@ public class Book {
             return ps.executeUpdate() > 0;
             
         } catch (SQLException ex) {
-            Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Librarian.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
+    }
+    
+    private int getAvailable(int id) {
+        try {
+            PreparedStatement ps;
+            ResultSet rs;
+            String query = "SELECT `available` FROM `books` WHERE `id`=?";
+            
+            ps = MyConnection.createConnection().prepareStatement(query);
+            ps.setInt(1, id);
+            
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Librarian.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return 0;
+    }
+    
+    boolean isAvailablel(int id) {
+        return getAvailable(id) > 0;
+    }
+    
+    boolean issueBook(int id) {
+        int available = getAvailable(id);
+        if (available > 0) {
+            try {
+                --available;
+                PreparedStatement ps;
+                String query = "UPDATE `books` SET `available`=? WHERE `id`=?";
+
+                ps = MyConnection.createConnection().prepareStatement(query);
+                ps.setInt(1, available);
+                ps.setInt(2, id);
+
+                return ps.executeUpdate() > 0;
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Librarian.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return false;
+    }
+    
+    boolean returnBook(int id) {
+        int available = getAvailable(id);
+        if (available >= 0) {
+            try {
+                available++;
+                PreparedStatement ps;
+                String query = "UPDATE `books` SET `available`=? WHERE `id`=?";
+
+                ps = MyConnection.createConnection().prepareStatement(query);
+                ps.setInt(1, available);
+                ps.setInt(2, id);
+
+                return ps.executeUpdate() > 0;
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Librarian.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return false;
     }
 }
 
