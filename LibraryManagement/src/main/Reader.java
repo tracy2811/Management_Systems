@@ -21,7 +21,7 @@ public class Reader {
         try {
             PreparedStatement ps;
             ResultSet rs;
-            String query = "SELECT `id`, `first_name`, `last_name` FROM `users` WHERE `type`=3 AND (`id`=? OR `first_name`=? OR `last_name`=?)";
+            String query = "SELECT `id`, `first_name`, `last_name`, `checkout` FROM `users` WHERE `type`=3 AND (`id`=? OR `first_name`=? OR `last_name`=?)";
             
             ps = MyConnection.createConnection().prepareStatement(query);
             ps.setInt(1, id);
@@ -30,17 +30,18 @@ public class Reader {
             
             rs = ps.executeQuery();
             
-            DefaultTableModel table = new DefaultTableModel(new Object[]{"ID", "First name", "Last name"}, 0);
+            DefaultTableModel table = new DefaultTableModel(new Object[]{"ID", "First name", "Last name", "Checkout"}, 0);
 
             if (rs.next() == false) {
                 JOptionPane.showMessageDialog(parentComponent, "No reader found!", "No Result", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 Object[] row;
                 do {
-                    row = new Object[3];
+                    row = new Object[4];
                     row[0] = rs.getInt(1);
                     row[1] = rs.getString(2);
                     row[2] = rs.getString(3);
+                    row[3] = rs.getInt(4);
                     table.addRow(row);
                 } while (rs.next());
             }
@@ -55,20 +56,21 @@ public class Reader {
         try {
             PreparedStatement ps;
             ResultSet rs;
-            String query = "SELECT `id`, `first_name`, `last_name` FROM `users` WHERE `type`=3";
+            String query = "SELECT `id`, `first_name`, `last_name`, `checkout` FROM `users` WHERE `type`=3";
             
             ps = MyConnection.createConnection().prepareStatement(query);
             
             rs = ps.executeQuery();
             
-            DefaultTableModel table = new DefaultTableModel(new Object[]{"ID", "First name", "Last name"}, 0);
+            DefaultTableModel table = new DefaultTableModel(new Object[]{"ID", "First name", "Last name", "Checkout"}, 0);
             
             Object[] row;
             while(rs.next()) {
-                row = new Object[3];
+                row = new Object[4];
                 row[0] = rs.getInt(1);
                 row[1] = rs.getString(2);
                 row[2] = rs.getString(3);
+                row[3] = rs.getInt(4);
                 table.addRow(row);
             }
             
@@ -217,6 +219,11 @@ public class Reader {
         }
         
         return false;
+    }
+    
+    boolean canCheckout(int id) {
+        int nCheckout = getCheckout(id);
+        return nCheckout >= 0 && nCheckout <5;
     }
 }
 

@@ -97,6 +97,11 @@ public class AdminForm extends javax.swing.JFrame {
         jTableLib.setRowMargin(2);
         jTableLib.setSelectionBackground(new java.awt.Color(0, 18, 91));
         jTableLib.getTableHeader().setReorderingAllowed(false);
+        jTableLib.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableLibMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTableLib);
 
         jPanelMain.add(jScrollPane1);
@@ -229,7 +234,7 @@ public class AdminForm extends javax.swing.JFrame {
 
         jPanelButton.add(jPanel2);
 
-        jLabelInfo.setText("<html>You are managing Librarians. \n<br>Make sure you know what you are performing. \n<br>From here, you can:\n<br>- Search for librarians by id, first name, last name and username\n<br>- Add new librarian\n<br>- Delete librarian by providing id or username\n<br>- Update librarian information</html>");
+        jLabelInfo.setText("<html>You are managing Librarians. \n<br>Make sure you know what you are performing. \n<br>From here, you can:\n<br>- Search for librarians by id, first name, last name and username\n<br>- Add new librarians\n<br>- Delete librarian by id\n<br>- Update librarian information</html>");
 
         javax.swing.GroupLayout jPanelToolLayout = new javax.swing.GroupLayout(jPanelTool);
         jPanelTool.setLayout(jPanelToolLayout);
@@ -372,6 +377,19 @@ public class AdminForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Cannot search for Librarians. Please try again.", "Search Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonSearchActionPerformed
+
+    private void jTableLibMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableLibMouseClicked
+        // Get jTable model
+        DefaultTableModel model = (DefaultTableModel)jTableLib.getModel();
+        // Get selected row
+        int rIndex = jTableLib.getSelectedRow();
+        // Display data
+        jTextFieldLibID.setText(model.getValueAt(rIndex, 0).toString());
+        jTextFieldLibFname.setText(model.getValueAt(rIndex, 1).toString());
+        jTextFieldLibLname.setText(model.getValueAt(rIndex, 2).toString());
+        jTextFieldLibUsername.setText(model.getValueAt(rIndex, 3).toString());
+        jTextFieldLibPassword.setText(model.getValueAt(rIndex, 4).toString());
+    }//GEN-LAST:event_jTableLibMouseClicked
 
     /**
      * @param args the command line arguments

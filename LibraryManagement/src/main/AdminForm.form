@@ -123,6 +123,9 @@
                   <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTableLibMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -431,7 +434,7 @@
             </Container>
             <Component class="javax.swing.JLabel" name="jLabelInfo">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&lt;html&gt;You are managing Librarians. &#xa;&lt;br&gt;Make sure you know what you are performing. &#xa;&lt;br&gt;From here, you can:&#xa;&lt;br&gt;- Search for librarians by id, first name, last name and username&#xa;&lt;br&gt;- Add new librarian&#xa;&lt;br&gt;- Delete librarian by providing id or username&#xa;&lt;br&gt;- Update librarian information&lt;/html&gt;"/>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;You are managing Librarians. &#xa;&lt;br&gt;Make sure you know what you are performing. &#xa;&lt;br&gt;From here, you can:&#xa;&lt;br&gt;- Search for librarians by id, first name, last name and username&#xa;&lt;br&gt;- Add new librarians&#xa;&lt;br&gt;- Delete librarian by id&#xa;&lt;br&gt;- Update librarian information&lt;/html&gt;"/>
               </Properties>
             </Component>
           </SubComponents>

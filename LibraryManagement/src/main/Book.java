@@ -120,17 +120,16 @@ public class Book {
         }
     }
     
-    boolean updateBook(int id, String title, String fauthor, int quantity, int available) {
+    boolean updateBook(int id, String title, String fauthor, int quantity) {
         try {
             PreparedStatement ps;
-            String query = "UPDATE `books` SET `title`=?,`first_author`=?,`quantity`=?,`available`=? WHERE `id`=?";
+            String query = "UPDATE `books` SET `title`=?,`first_author`=?,`quantity`=? WHERE `id`=?";
             
             ps = MyConnection.createConnection().prepareStatement(query);
             ps.setString(1, title.toLowerCase());
             ps.setString(2, fauthor.toLowerCase());
             ps.setInt(3, quantity);
-            ps.setInt(4, available);
-            ps.setInt(5, id);
+            ps.setInt(4, id);
             
             return ps.executeUpdate() > 0;
             

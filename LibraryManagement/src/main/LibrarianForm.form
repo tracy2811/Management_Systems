@@ -131,14 +131,20 @@
                   <Color blue="5b" green="12" red="0" type="rgb"/>
                 </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="3" rowCount="0">
-                    <Column editable="false" title="ID" type="java.lang.String"/>
+                  <Table columnCount="4" rowCount="0">
+                    <Column editable="false" title="ID" type="java.lang.Integer"/>
                     <Column editable="false" title="First name" type="java.lang.String"/>
                     <Column editable="false" title="Last name" type="java.lang.String"/>
+                    <Column editable="false" title="Checkout" type="java.lang.Integer"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
@@ -169,6 +175,9 @@
                   <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTableReaderMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -427,7 +436,7 @@
             </Container>
             <Component class="javax.swing.JLabel" name="jLabelReaderInfo">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&lt;html&gt;You are managing Librarians. &#xa;&lt;br&gt;Make sure you know what you are performing. &#xa;&lt;br&gt;From here, you can:&#xa;&lt;br&gt;- Search for librarians by id, first name, last name and username&#xa;&lt;br&gt;- Add new librarian&#xa;&lt;br&gt;- Delete librarian by providing id or username&#xa;&lt;br&gt;- Update librarian information&lt;/html&gt;"/>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;You are managing Readers. &#xa;&lt;br&gt;Make sure you know what you are performing. &#xa;&lt;br&gt;From here, you can:&#xa;&lt;br&gt;- Search for readers by id, first name, last name&#xa;&lt;br&gt;- Add new readers&#xa;&lt;br&gt;- Delete readers by id&#xa;&lt;br&gt;- Update readers information&lt;/html&gt;"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -513,6 +522,9 @@
                   <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTableBookMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -524,7 +536,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabelBookInfo" alignment="0" pref="377" max="32767" attributes="0"/>
+                          <Component id="jLabelBookInfo" alignment="0" pref="432" max="32767" attributes="0"/>
                           <Component id="jPanelInput1" alignment="0" max="32767" attributes="0"/>
                           <Component id="jPanelButton1" alignment="0" max="32767" attributes="0"/>
                       </Group>
@@ -552,7 +564,7 @@
               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
                 <Property name="columns" type="int" value="2"/>
                 <Property name="horizontalGap" type="int" value="20"/>
-                <Property name="rows" type="int" value="5"/>
+                <Property name="rows" type="int" value="4"/>
                 <Property name="verticalGap" type="int" value="10"/>
               </Layout>
               <SubComponents>
@@ -644,31 +656,6 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="jTextFieldBookQuantity">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Tahoma" size="14" style="1"/>
-                    </Property>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="5b" green="12" red="0" type="rgb"/>
-                    </Property>
-                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                      <Border info="null"/>
-                    </Property>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="jLabelBookAvailable">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Tahoma" size="14" style="1"/>
-                    </Property>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="5b" green="12" red="0" type="rgb"/>
-                    </Property>
-                    <Property name="horizontalAlignment" type="int" value="11"/>
-                    <Property name="text" type="java.lang.String" value="Available:"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JTextField" name="jTextFieldBookAvailable">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="14" style="1"/>
@@ -821,7 +808,7 @@
             </Container>
             <Component class="javax.swing.JLabel" name="jLabelBookInfo">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&lt;html&gt;You are managing Librarians.  &lt;br&gt;Make sure you know what you are performing.  &lt;br&gt;From here, you can: &lt;br&gt;- Search for librarians by id, first name, last name and username &lt;br&gt;- Add new librarian &lt;br&gt;- Delete librarian by providing id or username &lt;br&gt;- Update librarian information&lt;/html&gt;"/>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;You are managing Books.  &#xa;&lt;br&gt;Make sure you know what you are performing.  &#xa;&lt;br&gt;From here, you can: &#xa;&lt;br&gt;- Search for books by id, title, first author &#xa;&lt;br&gt;- Add new books &#xa;&lt;br&gt;- Delete books by id&#xa;&lt;br&gt;- Update book information&lt;/html&gt;"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -913,6 +900,9 @@
                   <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTableIssueMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -1230,7 +1220,7 @@
             </Container>
             <Component class="javax.swing.JLabel" name="jLabelInfo2">
               <Properties>
-                <Property name="text" type="java.lang.String" value="&lt;html&gt;You are managing Librarians. &#xa;&lt;br&gt;Make sure you know what you are performing. &#xa;&lt;br&gt;From here, you can:&#xa;&lt;br&gt;- Search for librarians by id, first name, last name and username&#xa;&lt;br&gt;- Add new librarian&#xa;&lt;br&gt;- Delete librarian by providing id or username&#xa;&lt;br&gt;- Update librarian information&lt;/html&gt;"/>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;You are managing Issues&#xa;&lt;br&gt;Make sure you know what you are performing. &#xa;&lt;br&gt;From here, you can:&#xa;&lt;br&gt;- Search for issues by id, book id, reader id&#xa;&lt;br&gt;- Add new issues&#xa;&lt;br&gt;- Delete issues by id&#xa;&lt;br&gt;- Update issue information&lt;/html&gt;"/>
               </Properties>
             </Component>
           </SubComponents>

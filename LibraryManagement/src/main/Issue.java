@@ -2,10 +2,11 @@
 package main;
 
 import java.awt.Component;
-import java.nio.channels.NetworkChannel;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -26,7 +27,7 @@ public class Issue {
         try {
             PreparedStatement ps;
             ResultSet rs;
-            String query = "SELECT * FROM `issues` WHERE `id`=? OR `book_id`=? OR `reader_id`=?";
+            String query = "SELECT * FROM `issues` WHERE `id`=? OR `book_id`=? OR `user_id`=?";
             
             ps = MyConnection.createConnection().prepareStatement(query);
             ps.setInt(1, id);
@@ -38,7 +39,7 @@ public class Issue {
             DefaultTableModel table = new DefaultTableModel(new Object[]{"ID", "Book ID", "Reader ID", "Checkout Date", "Return Date", "Fine"}, 0);
 
             if (rs.next() == false) {
-                JOptionPane.showMessageDialog(parentComponent, "No book found!", "No Result", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(parentComponent, "No issue found!", "No Result", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 Object[] row;
                 do {
@@ -120,6 +121,10 @@ public class Issue {
     }
     
     boolean deleteIssue(int id) {
+        // Book not return yet
+        if (isCheckout(id) && !(reader.returnBook(getReaderID(id)) && book.returnBook(getBookID(id)))) {
+            return false;
+        }
         try {
             PreparedStatement ps;
             String query = "DELETE FROM `issues` WHERE `id`=?";
@@ -177,28 +182,77 @@ public class Issue {
         return -1;
     }
     
-    boolean updateIssue(int id, int bookID, int readerID, String checkoutDate, String returnDate) {
+    boolean isCheckout(int id) {
+        try {
+            PreparedStatement ps;
+            ResultSet rs;
+            String query = "SELECT `return_date` FROM `issues` WHERE `id`=?";
+            
+            ps = MyConnection.createConnection().prepareStatement(query);
+            ps.setInt(1, id);
+            
+            rs = ps.executeQuery();
+           
+            if (rs.next()) {
+                return rs.getString(1) == null || rs.getString(1).isBlank();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Librarian.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return false;
+    }
+    
+    boolean updateIssue(int id, int bookID, int readerID, String checkoutDate, String returnDate) throws ParseException {
         if (!book.isAvailablel(bookID)) {
-            JOptionPane.showMessageDialog(parentComponent, "Book is not available", "Add Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(parentComponent, "Book not available", "Add Error", JOptionPane.ERROR_MESSAGE);
+        } else if (!reader.canCheckout(readerID)){
+            JOptionPane.showMessageDialog(parentComponent, "Reader not exist or already booked 5 books", "Add Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            int nCheckout = reader.getCheckout(readerID);
-            if (nCheckout >= 0 && nCheckout < 5) {
-                int prevBook = getBookID(id);
-                int prevReader = getReaderID(id);
+            // If previous one not return, update previous book and reader
+            if (isCheckout(id) && !(book.returnBook(getBookID(id)) && reader.returnBook(getReaderID(id)))) {
+                return false;
+            }
+            
+            if (returnDate.isBlank()) { // If current one not return, update current book and reader
+                try {
+                    PreparedStatement ps;
+
+                    String query = "UPDATE `issues` SET `book_id`=?,`user_id`=?,`checkout_date`=?,`return_date`=NULL WHERE `id`=?";
+                    ps = MyConnection.createConnection().prepareStatement(query);
+                    ps.setInt(1, bookID);
+                    ps.setInt(2, readerID);
+                    ps.setString(3, checkoutDate);
+                    ps.setInt(4, id);
+
+                    return book.issueBook(bookID) && reader.issueBook(readerID) && ps.executeUpdate() > 0;
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(Librarian.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
                 
-                if (prevBook > 0 && prevReader > 0) {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+                
+                int diff = (int) ((format.parse(returnDate).getTime() - format.parse(checkoutDate).getTime()) / (1000 * 60 * 60 * 24));
+
+                if (diff < 0) {
+                    JOptionPane.showMessageDialog(parentComponent, "Return Date before Checkout Date", "Invalid Date", JOptionPane.WARNING_MESSAGE);
+                } else {
                     try {
+                        int fine = (diff > 14) ? (diff - 14) : 0;
                         PreparedStatement ps;
 
-                        String query = "UPDATE `issues` SET `book_id`=?,`user_id`=?,`checkout_date`=?,`return_date`=? WHERE `id`=?";
+                        String query = "UPDATE `issues` SET `book_id`=?,`user_id`=?,`checkout_date`=?,`return_date`=?,`fine`=? WHERE `id`=?";
                         ps = MyConnection.createConnection().prepareStatement(query);
                         ps.setInt(1, bookID);
                         ps.setInt(2, readerID);
                         ps.setString(3, checkoutDate);
                         ps.setString(4, returnDate);
-                        ps.setInt(5, id);
+                        ps.setInt(5, fine);
+                        ps.setInt(6, id);
 
-                        return book.returnBook(prevBook) && reader.returnBook(prevReader) && ps.executeUpdate() > 0;
+                        return ps.executeUpdate() > 0;
 
                     } catch (SQLException ex) {
                         Logger.getLogger(Librarian.class.getName()).log(Level.SEVERE, null, ex);

@@ -3,6 +3,7 @@ package main;
 
 import java.awt.Color;
 import java.awt.HeadlessException;
+import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -34,7 +35,7 @@ public class LibrarianForm extends javax.swing.JFrame {
         jPanelBook.setEnabled(false);
         jPanelIssue.setVisible(false);
         jPanelIssue.setEnabled(false);
-        readerRefresh(reader.getAllReaders());
+        jTableReader.setModel(reader.getAllReaders());
     }
     
     private void selectBook() {
@@ -47,7 +48,7 @@ public class LibrarianForm extends javax.swing.JFrame {
         jPanelBook.setEnabled(true);
         jPanelIssue.setVisible(false);
         jPanelIssue.setEnabled(false);
-        bookRefresh(book.getAllBooks());
+        jTableBook.setModel(book.getAllBooks());
     }
     
     private void selectIssue() {
@@ -60,7 +61,7 @@ public class LibrarianForm extends javax.swing.JFrame {
         jPanelBook.setEnabled(false);
         jPanelIssue.setVisible(true);
         jPanelIssue.setEnabled(true);
-        issueRefresh(issue.getAllIssues());
+        jTableIssue.setModel(issue.getAllIssues());
     }
 
     /**
@@ -104,8 +105,6 @@ public class LibrarianForm extends javax.swing.JFrame {
         jTextFieldBookAuthor = new javax.swing.JTextField();
         jLabelBookQuantity = new javax.swing.JLabel();
         jTextFieldBookQuantity = new javax.swing.JTextField();
-        jLabelBookAvailable = new javax.swing.JLabel();
-        jTextFieldBookAvailable = new javax.swing.JTextField();
         jPanelButton1 = new javax.swing.JPanel();
         jButtonBookClear = new javax.swing.JButton();
         jButtonBookSearch = new javax.swing.JButton();
@@ -158,14 +157,14 @@ public class LibrarianForm extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "First name", "Last name"
+                "ID", "First name", "Last name", "Checkout"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -182,6 +181,11 @@ public class LibrarianForm extends javax.swing.JFrame {
         jTableReader.setRowMargin(2);
         jTableReader.setSelectionBackground(new java.awt.Color(0, 18, 91));
         jTableReader.getTableHeader().setReorderingAllowed(false);
+        jTableReader.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableReaderMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTableReader);
 
         jPanelReader.add(jScrollPane1);
@@ -292,7 +296,7 @@ public class LibrarianForm extends javax.swing.JFrame {
 
         jPanelButton.add(jPanel2);
 
-        jLabelReaderInfo.setText("<html>You are managing Librarians. \n<br>Make sure you know what you are performing. \n<br>From here, you can:\n<br>- Search for librarians by id, first name, last name and username\n<br>- Add new librarian\n<br>- Delete librarian by providing id or username\n<br>- Update librarian information</html>");
+        jLabelReaderInfo.setText("<html>You are managing Readers. \n<br>Make sure you know what you are performing. \n<br>From here, you can:\n<br>- Search for readers by id, first name, last name\n<br>- Add new readers\n<br>- Delete readers by id\n<br>- Update readers information</html>");
 
         javax.swing.GroupLayout jPanelToolLayout = new javax.swing.GroupLayout(jPanelTool);
         jPanelTool.setLayout(jPanelToolLayout);
@@ -356,11 +360,16 @@ public class LibrarianForm extends javax.swing.JFrame {
         jTableBook.setRowMargin(2);
         jTableBook.setSelectionBackground(new java.awt.Color(0, 18, 91));
         jTableBook.getTableHeader().setReorderingAllowed(false);
+        jTableBook.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableBookMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTableBook);
 
         jPanelBook.add(jScrollPane2);
 
-        jPanelInput1.setLayout(new java.awt.GridLayout(5, 2, 20, 10));
+        jPanelInput1.setLayout(new java.awt.GridLayout(4, 2, 20, 10));
 
         jLabelID1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabelID1.setForeground(new java.awt.Color(0, 18, 91));
@@ -405,17 +414,6 @@ public class LibrarianForm extends javax.swing.JFrame {
         jTextFieldBookQuantity.setForeground(new java.awt.Color(0, 18, 91));
         jTextFieldBookQuantity.setBorder(null);
         jPanelInput1.add(jTextFieldBookQuantity);
-
-        jLabelBookAvailable.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabelBookAvailable.setForeground(new java.awt.Color(0, 18, 91));
-        jLabelBookAvailable.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabelBookAvailable.setText("Available:");
-        jPanelInput1.add(jLabelBookAvailable);
-
-        jTextFieldBookAvailable.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jTextFieldBookAvailable.setForeground(new java.awt.Color(0, 18, 91));
-        jTextFieldBookAvailable.setBorder(null);
-        jPanelInput1.add(jTextFieldBookAvailable);
 
         jPanelButton1.setLayout(new java.awt.GridLayout(3, 1, 50, 15));
 
@@ -488,7 +486,7 @@ public class LibrarianForm extends javax.swing.JFrame {
 
         jPanelButton1.add(jPanel3);
 
-        jLabelBookInfo.setText("<html>You are managing Librarians.  <br>Make sure you know what you are performing.  <br>From here, you can: <br>- Search for librarians by id, first name, last name and username <br>- Add new librarian <br>- Delete librarian by providing id or username <br>- Update librarian information</html>");
+        jLabelBookInfo.setText("<html>You are managing Books.  \n<br>Make sure you know what you are performing.  \n<br>From here, you can: \n<br>- Search for books by id, title, first author \n<br>- Add new books \n<br>- Delete books by id\n<br>- Update book information</html>");
 
         javax.swing.GroupLayout jPanelTool1Layout = new javax.swing.GroupLayout(jPanelTool1);
         jPanelTool1.setLayout(jPanelTool1Layout);
@@ -497,7 +495,7 @@ public class LibrarianForm extends javax.swing.JFrame {
             .addGroup(jPanelTool1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelTool1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelBookInfo, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+                    .addComponent(jLabelBookInfo, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
                     .addComponent(jPanelInput1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanelButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -552,6 +550,11 @@ public class LibrarianForm extends javax.swing.JFrame {
         jTableIssue.setRowMargin(2);
         jTableIssue.setSelectionBackground(new java.awt.Color(0, 18, 91));
         jTableIssue.getTableHeader().setReorderingAllowed(false);
+        jTableIssue.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableIssueMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(jTableIssue);
 
         jPanelIssue.add(jScrollPane3);
@@ -691,7 +694,7 @@ public class LibrarianForm extends javax.swing.JFrame {
 
         jPanelButton2.add(jPanel4);
 
-        jLabelInfo2.setText("<html>You are managing Librarians. \n<br>Make sure you know what you are performing. \n<br>From here, you can:\n<br>- Search for librarians by id, first name, last name and username\n<br>- Add new librarian\n<br>- Delete librarian by providing id or username\n<br>- Update librarian information</html>");
+        jLabelInfo2.setText("<html>You are managing Issues\n<br>Make sure you know what you are performing. \n<br>From here, you can:\n<br>- Search for issues by id, book id, reader id\n<br>- Add new issues\n<br>- Delete issues by id\n<br>- Update issue information</html>");
 
         javax.swing.GroupLayout jPanelTool2Layout = new javax.swing.GroupLayout(jPanelTool2);
         jPanelTool2.setLayout(jPanelTool2Layout);
@@ -898,19 +901,16 @@ public class LibrarianForm extends javax.swing.JFrame {
         String fauthor = jTextFieldBookAuthor.getText();
         try {
             int quantity = Integer.valueOf(jTextFieldBookQuantity.getText());
-            int available = Integer.valueOf(jTextFieldBookAvailable.getText());
             int id = Integer.valueOf(jTextFieldBookID.getText());
         
-            if (quantity <= 0 || available < 0) {
-                throw new Exception("Non positive number");
+            if (quantity <= 0) {
+                throw new Exception("Negative number");
             }
             
             if (title.isBlank() || fauthor.isBlank()) {
                 JOptionPane.showMessageDialog(rootPane, "Required fields: Title, First Author, Quantity, Available", "Empty Field", JOptionPane.WARNING_MESSAGE);
-            } else if (available > quantity) {
-                JOptionPane.showMessageDialog(rootPane, "Number of books available bigger than total number of books", "Invalid Input", JOptionPane.ERROR_MESSAGE);
             } else {
-                if (book.updateBook(id, title, fauthor, quantity, available)) {
+                if (book.updateBook(id, title, fauthor, quantity)) {
                     bookRefresh(book.getAllBooks());
                 } else {
                     JOptionPane.showMessageDialog(rootPane, jTextFieldBookID.getText() + " not updated", "Update Error", JOptionPane.ERROR_MESSAGE);
@@ -925,10 +925,12 @@ public class LibrarianForm extends javax.swing.JFrame {
         try {
             int id = Integer.valueOf(jTextFieldBookID.getText());
 
-            if (book.deleteBook(id)) {
-                bookRefresh(book.getAllBooks());
-            } else {
-                JOptionPane.showMessageDialog(rootPane, jTextFieldBookID.getText() + " not deleted", "Delete Error", JOptionPane.ERROR_MESSAGE);
+            if (JOptionPane.showConfirmDialog(rootPane, "Delete Book" + jTextFieldBookID.getText() + "?", "Delete Confirm", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+                if (book.deleteBook(id)) {
+                    bookRefresh(book.getAllBooks());
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, jTextFieldBookID.getText() + " not deleted", "Delete Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         } catch (HeadlessException | NumberFormatException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Invalid Input", JOptionPane.ERROR_MESSAGE);
@@ -1000,8 +1002,8 @@ public class LibrarianForm extends javax.swing.JFrame {
             String checkoutDate = jFormattedTextFieldODate.getText();
             String returnDate = jFormattedTextFieldRDate.getText();
             
-            if (checkoutDate.isBlank() || returnDate.isBlank()) {
-                JOptionPane.showMessageDialog(rootPane, "Required fields: Id, Book ID, reader ID, Checkout Date, Return Date", "Empty Field", JOptionPane.WARNING_MESSAGE);
+            if (checkoutDate.isBlank()) {
+                JOptionPane.showMessageDialog(rootPane, "Required fields: Id, Book ID, reader ID, Checkout Date", "Empty Field", JOptionPane.WARNING_MESSAGE);
             } else {
                 if (issue.updateIssue(id, bookID, readerID, checkoutDate, returnDate)) {
                     issueRefresh(issue.getAllIssues());
@@ -1011,6 +1013,8 @@ public class LibrarianForm extends javax.swing.JFrame {
             }
         } catch (HeadlessException | NumberFormatException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage() + " - Number only", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+        } catch (ParseException ex) {
+            Logger.getLogger(LibrarianForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButtonIssueUpdateActionPerformed
 
@@ -1018,10 +1022,12 @@ public class LibrarianForm extends javax.swing.JFrame {
         try {
             int id = Integer.valueOf(jTextFieldIssueID.getText());
 
-            if (issue.deleteIssue(id)) {
-                issueRefresh(issue.getAllIssues());
-            } else {
-                JOptionPane.showMessageDialog(rootPane, jTextFieldIssueID.getText() + " not deleted", "Delete Error", JOptionPane.ERROR_MESSAGE);
+            if (JOptionPane.showConfirmDialog(rootPane, "Delete Issue " + jTextFieldIssueID.getText() + "?", "Delete Confirm", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+                if (issue.deleteIssue(id)) {
+                    issueRefresh(issue.getAllIssues());
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, jTextFieldIssueID.getText() + " not deleted", "Delete Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         } catch (HeadlessException | NumberFormatException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage(), "Invalid Input", JOptionPane.ERROR_MESSAGE);
@@ -1044,6 +1050,42 @@ public class LibrarianForm extends javax.swing.JFrame {
         selectIssue();
     }//GEN-LAST:event_jMenuIssueMouseClicked
 
+    private void jTableReaderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableReaderMouseClicked
+        // Get jTable model
+        DefaultTableModel model = (DefaultTableModel)jTableReader.getModel();
+        // Get selected row
+        int rIndex = jTableReader.getSelectedRow();
+        // Display data
+        jTextFieldReaderID.setText(model.getValueAt(rIndex, 0).toString());
+        jTextFieldReaderFname.setText(model.getValueAt(rIndex, 1).toString());
+        jTextFieldReaderLname.setText(model.getValueAt(rIndex, 2).toString());
+    }//GEN-LAST:event_jTableReaderMouseClicked
+
+    private void jTableBookMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableBookMouseClicked
+        // Get jTable model
+        DefaultTableModel model = (DefaultTableModel)jTableBook.getModel();
+        // Get selected row
+        int rIndex = jTableBook.getSelectedRow();
+        // Display data
+        jTextFieldBookID.setText(model.getValueAt(rIndex, 0).toString());
+        jTextFieldBookTitle.setText(model.getValueAt(rIndex, 1).toString());
+        jTextFieldBookAuthor.setText(model.getValueAt(rIndex, 2).toString());
+        jTextFieldBookQuantity.setText(model.getValueAt(rIndex, 3).toString());
+    }//GEN-LAST:event_jTableBookMouseClicked
+
+    private void jTableIssueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableIssueMouseClicked
+        // Get jTable model
+        DefaultTableModel model = (DefaultTableModel)jTableIssue.getModel();
+        // Get selected row
+        int rIndex = jTableIssue.getSelectedRow();
+        // Display data
+        jTextFieldIssueID.setText(model.getValueAt(rIndex, 0).toString());
+        jTextFieldIssueBookID.setText(model.getValueAt(rIndex, 1).toString());
+        jTextFieldIssueReaderID.setText(model.getValueAt(rIndex, 2).toString());
+        jFormattedTextFieldODate.setText(model.getValueAt(rIndex, 3).toString());
+        jFormattedTextFieldRDate.setText(model.getValueAt(rIndex, 4).toString());
+    }//GEN-LAST:event_jTableIssueMouseClicked
+
     private void readerRefresh(DefaultTableModel table) {
         jTextFieldReaderID.setText("");
         jTextFieldReaderFname.setText("");
@@ -1056,7 +1098,6 @@ public class LibrarianForm extends javax.swing.JFrame {
         jTextFieldBookAuthor.setText("");
         jTextFieldBookTitle.setText("");
         jTextFieldBookQuantity.setText("");
-        jTextFieldBookAvailable.setText("");
         jTableBook.setModel(table);
     }
     
@@ -1130,7 +1171,6 @@ public class LibrarianForm extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField jFormattedTextFieldODate;
     private javax.swing.JFormattedTextField jFormattedTextFieldRDate;
     private javax.swing.JLabel jLabelBookAuthor;
-    private javax.swing.JLabel jLabelBookAvailable;
     private javax.swing.JLabel jLabelBookInfo;
     private javax.swing.JLabel jLabelBookQuantity;
     private javax.swing.JLabel jLabelBookTitle;
@@ -1171,7 +1211,6 @@ public class LibrarianForm extends javax.swing.JFrame {
     private javax.swing.JTable jTableIssue;
     private javax.swing.JTable jTableReader;
     private javax.swing.JTextField jTextFieldBookAuthor;
-    private javax.swing.JTextField jTextFieldBookAvailable;
     private javax.swing.JTextField jTextFieldBookID;
     private javax.swing.JTextField jTextFieldBookQuantity;
     private javax.swing.JTextField jTextFieldBookTitle;
