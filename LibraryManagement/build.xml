@@ -70,4 +70,27 @@
     nbproject/build-impl.xml file. 
 
     -->
+    
+    <!-- Thanks to https://pastebin.com/b0e536YS -->
+    <target name="-post-jar">      <!-- Tell ANT we're creating a new build artifact, after the main jar
+                                        file is built. -->
+        <jar jarfile="dist\LibMan.jar">      <!-- Tell ANT to build new jar file with
+                                                                  specified name. -->
+            <zipfileset src="${dist.jar}" excludes="META-INF/*" /> <!-- Add everything from main jar file
+                                                                        except the manifest into the new 
+                                                                        jar file. -->
+            <zipfileset src="D:\Something\Software\Win\mysql-connector-java-8.0.17.jar" excludes="META-INF/*" /> <!-- Also add everything from
+                                                                                 this dependency in the
+                                                                                 lib folder except its
+                                                                                 manifest file into the
+                                                                                 new jar file. (Do this for
+                                                                                 every dependency) -->
+
+            <manifest>      <!-- Create a new manifest file for this new jar file. -->
+                <attribute name="Main-Class" value="form.LoginForm" /> <!-- Set the main class to
+                                                                                specified class if there is 
+                                                                                one. -->
+            </manifest>      <!-- Obligatory closing line -->
+        </jar>               <!-- ditto -->
+    </target>                <!-- No f***ing autocorrect I did not mean dildo -->
 </project>
